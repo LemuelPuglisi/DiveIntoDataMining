@@ -638,3 +638,31 @@ L'accuratezza delle reti neurali è proporzionale alla quantità di dati nel tra
 
 ## 5. Tipologie di reti neurali
 
+### 5.1 Feed-Forward Networks (FFNs)
+
+Una **rete neurale feed-forward** ("rete neurale con flusso in avanti") o **rete feed-forward** è una rete neurale artificiale dove le connessioni tra le unità non formano cicli, differenziandosi  dalle reti neurali ricorrenti. Questo tipo di rete neurale fu la prima e più semplice tra quelle messe a punto. In questa rete neurale le  informazioni si muovono solo in una direzione, avanti, rispetto a nodi  d'ingresso, attraverso nodi nascosti (se esistenti) fino ai nodi  d'uscita. Nella rete non ci sono cicli. Le reti feed-forward non hanno  memoria di input avvenuti a tempi precedenti, per cui l'output è  determinato solamente dall'attuale input.
+
+![](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__16.png)
+
+### 5.2 Convolutional Neural Networks (CNN)
+
+Una *rete neurale convoluzionale* (**CNN** o **ConvNet** dall'inglese *convolutional neural network*) è un tipo di rete neurale artificiale feed-forward in cui il pattern di connettività tra i neuroni è ispirato  dall'organizzazione della corteccia visiva animale, i cui neuroni  individuali della retina (fotorecettori) sono disposti in layer. Hanno diverse applicazioni nel riconoscimento di immagini e video, nei sistemi di raccomandazione, nell'elaborazione del linguaggio naturale e, recentemente, in bioinformatica.
+
+![image-20210107201247037](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__17.png)
+
+Una rete neurale convoluzionale contiene uno o più layer convoluzionali. I nodi all'interno di un layer convoluzionale condividono gli stessi pesi per gli input. Generalmente si alternano i layer convoluzionali a dei layer pooled (o a volte densi) con un numero di nodi progressivamente minore. 
+
+Il primo layer coglie le informazioni che rappresentano i pixel essenziali delle immagini, ovvero i contorni. Lo schema di riconoscimento dei contorni è sempre lo stesso e non dipende dal punto in cui viene osservato un contorno (in analogia col fatto che in una CNN i nodi dello stesso layer condividono i pesi degli input). I successivi layer della retina combinano i risultati dei precedenti layer per riconoscere strutture via via più complesse (es. regioni dello stesso colore e infine volti e oggetti).
+
+![](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__18.png)
+
+
+
+#### 5.2.1 Convolutional layer
+
+Un layer convoluzionale è formato da una griglia di nodi. Ogni nodo può essere immaginato come un *filtro* di dimensione $f \times f$ applicato in un punto della griglia di nodi del layer precedente, ed $f$ è detta dimensione del filtro. Nell'ambito dell'image processing, questo equivale ad applicare un filtro $f \times f$ in un pixel di una immagine. Se il nodo della convolutional layer applica il filtro sul nodo $x_{i,j}$ della griglia di nodi del layer precedente, si considera il quadrato di dimensione $f \times f$ il cui vertice in alto a sinistra è $x_{i,j}$ e si calcola il valore di output come segue: 
+$$
+z_{i,j} = \sum_k^f\sum_l^f w_{k,l} \times x_{i+k, j+l}
+$$
+Se anziché considerare il vertice in alto a sinistra si considerasse il centro, la formula assumerebbe un'altra forma. Per calcolare l'output di tutti i nodi del layer convoluzionale bisogna scorrere il filtro (uguale per tutti i nodi) in lungo ed in largo sulla griglia del layer precedente ed applicarlo. Il risultato è una convoluzione del filtro sull'immagine prodotta dal layer precedente, da cui il nome. Lo *stride* di un filtro indica di quante posizioni si deve scorrere una volta applicato il filtro. Se $stride = 1$ allora l'immagine in output avrà la stessa dimensione dell'immagine in input, se $stride > 1$ allora sarà più piccola. 
+
