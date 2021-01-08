@@ -739,3 +739,71 @@ Per gestire sequenze di lunghezza variabile si possono utilizzare due tecniche:
 * *Bucketing*: raggruppa le sequenze sulla base della loro lunghezza e costruisce una RNN diversa per ogni valore di lunghezza. 
 
 È possibile combinare le due tecniche: si costruiscono diversi bucket, ciascuno dei quali è in grado di gestire sequenze di lunghezza simile in un piccolo intervallo di valori. Si assegna la sequenza in input al bucket in grado di gestire sequenze della stessa lunghezza o di lunghezza leggermente più alta. In quest'ultimo caso si effettua il padding. 
+
+
+
+#### 5.3.4 Limiti delle RNN
+
+Le RNN sono efficaci solo nell'apprendimento di relazioni o connessioni tra elementi vicini nella sequenza, mentre non sono in grado di apprendere relazioni tra elementi distanti. Ciò può essere problematico nell'apprendimento di un testo. Un verbo o un pronome possono essere separati da molte parole dal soggetto della frase. A livello di calcolo del gradiente, ciò si riflette in una instabilità dei valori, con una saturazione o una esplosione della derivata prima della funzione di attivazione.  
+
+<div style="page-break-after: always;"></div>
+
+
+
+### 5.4 Long Short-Term Memory (LSTM)
+
+La tecnica *Long Short-Term Memory* (LSTM) è un raffinamento delle RNN che affronta il problema delle connessioni a lunga distanza. Le proprietà di una rete LSTM possono essere riassunte da tre verbi: 
+
+* *Forget*, la capacità di eliminare dalla memoria informazioni che non servono più. Ad esempio, nell'analisi di un testo potremmo scartare informazioni su una frase quando termina. 
+* *Save*, la capacità di salvare determinate informazioni in memoria. Ad esempio, nell'analisi di un testo potremmo salvare solo le parole chiave di una frase quando termina.
+* *Focus*, la capacità di focalizzarsi solo su aspetti della memoria immediatamente rilevanti. Ad esempio, nell'analisi di un testo possiamo concentrarci solo su parole che riguardano il contesto della frase attualmente analizzata. 
+
+Per realizzare tali proprietà si necessita di una *memoria a lungo termine* (con informazioni sulla parte di sequenza già analizzata) e di una *memoria corrente* (con informazioni di immediata rilevanza).  
+
+<img src="/home/charlemagne/Scrivania/DiveIntoDataMining/_media/11._Reti_neurali__23.png" alt="image-20210108174739895" style="margin-top:10px" />
+
+
+
+#### 5.4.1 Struttura di una LSTM 
+
+Gli stati rapresentano le due tipologie di memoria: 
+
+* *Stato nascosto*: vettore $\bar{s}_t$ al tempo $t$ che indica la memoria corrente;
+* *Cell state*: vettore $\bar{c}_t$ al tempo $t$ che indica la memoria a lungo termine;
+
+IL vettore $\bar{h}_t$ contiene l'update temporaneo dello stato nascosto. I gate sono vettori usati per far passare selettivamente alcune informazioni di uno stato scartando il resto. Vi sono 3 gate: 
+
+* L'*input gate* $\bar{i}_t$ determina quali parti del vettore $\bar{h}_t$ salvare nella memoria long-term;
+* Il *forget gate* $\bar{f}_t$ che determina quali aspetti della memoria long-term mantenere;
+* L'*output gate* $\bar{o}_t$ che indica quali parti della memoria long-term spostare nella memoria corrente. 
+
+
+
+
+
+#### 5.4.2 Aggiornamento del cell state
+
+Il primo passo per aggiornare il cell state è calcolare l'update temporaneo dello stato nascosto $\bar{h}_t$: 
+$$
+\bar{h}_t = \tanh(W_h \bar{s}_{t-1} + U_h\bar{x}_t + \bar{b}_h)
+$$
+Dopodiché si calcolano l'input gate ed il forget gate: 
+$$
+\bar{i}_t = \sigma(W_i \bar{s}_{t-1} + U_i\bar{x}_t + \bar{b}_i) \\
+\bar{f}_t = \sigma(W_f \bar{s}_{t-1} + U_f\bar{x}_t + \bar{b}_f)
+$$
+Si aggiorna la memoria a lungo termine: 
+$$
+\bar{c}_t = \bar{c}_{t-1} \circ \bar{f}_t + \bar{h}_t \circ \bar{i}_t
+$$
+Dove $W_h, W_i, W_f, U_h, U_i, U_f$ sono matrici di pesi e $b_h, b_i, b_f$ sono vettori di bias. Il simbolo $\circ$ indica il prodotto di Hadamard, ovvero il prodotto puntuale tra vettori o matrici. 
+
+
+
+#### 5.4.3 Calcolo dell'output 
+
+L'output è calcolato allo stesso modo di qualsiasi RNN: 
+$$
+\bar{y}_t = g(V\bar{s}_t + \bar{d})
+$$
+Dove $g$ è una funzione di attivazione, $V$ è una matrice di pesi e $\bar d$ è un vettore di bias. 
