@@ -18,11 +18,24 @@ chapters = [
     "extra_3_Word_embedding_e_Sentiment_Analysis.md"
 ]
 
+def write_chapter_page (file, chapter):
+    file.write('\n <div style="page-break-after: always;"></div> \n')
+    file.write('<div style="margin-top:300px;">')
+    file.write("<h1> Capitolo " + str(chapter) + "</h1>")
+    file.write('</div>')
+    file.write('\n <div style="page-break-after: always;"></div> \n')    
+
+chapter_counter = 1
 outfile = open('../000_dive_into_data_mining.md', 'w+')
 
 for fname in chapters:
     
     with open("../" + fname) as infile:
+
+        if fname != "0_Preface.md":
+            write_chapter_page(outfile, chapter_counter)
+            chapter_counter += 1
+
         for line in infile:
             outfile.write(line)
 
