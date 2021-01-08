@@ -642,19 +642,19 @@ L'accuratezza delle reti neurali è proporzionale alla quantità di dati nel tra
 
 Una **rete neurale feed-forward** ("rete neurale con flusso in avanti") o **rete feed-forward** è una rete neurale artificiale dove le connessioni tra le unità non formano cicli, differenziandosi  dalle reti neurali ricorrenti. Questo tipo di rete neurale fu la prima e più semplice tra quelle messe a punto. In questa rete neurale le  informazioni si muovono solo in una direzione, avanti, rispetto a nodi  d'ingresso, attraverso nodi nascosti (se esistenti) fino ai nodi  d'uscita. Nella rete non ci sono cicli. Le reti feed-forward non hanno  memoria di input avvenuti a tempi precedenti, per cui l'output è  determinato solamente dall'attuale input.
 
-![](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__16.png)
+![](.\_media\11._Reti_neurali__16.png)
 
 ### 5.2 Convolutional Neural Networks (CNN)
 
 Una *rete neurale convoluzionale* (**CNN** o **ConvNet** dall'inglese *convolutional neural network*) è un tipo di rete neurale artificiale feed-forward in cui il pattern di connettività tra i neuroni è ispirato  dall'organizzazione della corteccia visiva animale, i cui neuroni  individuali della retina (fotorecettori) sono disposti in layer. Hanno diverse applicazioni nel riconoscimento di immagini e video, nei sistemi di raccomandazione, nell'elaborazione del linguaggio naturale e, recentemente, in bioinformatica.
 
-![image-20210107201247037](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__17.png)
+![image-20210107201247037](.\_media\11._Reti_neurali__17.png)
 
 Una rete neurale convoluzionale contiene uno o più layer convoluzionali. I nodi all'interno di un layer convoluzionale condividono gli stessi pesi per gli input. Generalmente si alternano i layer convoluzionali a dei layer pooled (o a volte densi) con un numero di nodi progressivamente minore. 
 
 Il primo layer coglie le informazioni che rappresentano i pixel essenziali delle immagini, ovvero i contorni. Lo schema di riconoscimento dei contorni è sempre lo stesso e non dipende dal punto in cui viene osservato un contorno (in analogia col fatto che in una CNN i nodi dello stesso layer condividono i pesi degli input). I successivi layer della retina combinano i risultati dei precedenti layer per riconoscere strutture via via più complesse (es. regioni dello stesso colore e infine volti e oggetti).
 
-![](C:\Users\Charlemagne\Desktop\DiveIntoDataMining\_media\11._Reti_neurali__18.png)
+![](.\_media\11._Reti_neurali__18.png)
 
 
 
@@ -666,3 +666,76 @@ z_{i,j} = \sum_k^f\sum_l^f w_{k,l} \times x_{i+k, j+l}
 $$
 Se anziché considerare il vertice in alto a sinistra si considerasse il centro, la formula assumerebbe un'altra forma. Per calcolare l'output di tutti i nodi del layer convoluzionale bisogna scorrere il filtro (uguale per tutti i nodi) in lungo ed in largo sulla griglia del layer precedente ed applicarlo. Il risultato è una convoluzione del filtro sull'immagine prodotta dal layer precedente, da cui il nome. Lo *stride* di un filtro indica di quante posizioni si deve scorrere una volta applicato il filtro. Se $stride = 1$ allora l'immagine in output avrà la stessa dimensione dell'immagine in input, se $stride > 1$ allora sarà più piccola. 
 
+
+
+#### 5.2.2 Zero padding 
+
+A seconda delle dimensioni della matrice di input ricevuta, la matrice di output prodotta potrebbe avere dimensioni inferiori anche con stride pari ad 1.Nell'esempio sottostante, partendo dai pixel nell'angolo in basso a destra dell'input potrebbe essere impossibile costruire un quadrato di dimensione $f \times f$. Per ottenere un output delle stesse dimensioni dell'input, una tecnica semplice consiste nell'aggiungere alla matrice di input righe e colonne di $0$. Questa tecnica prende il nome di *zero padding*. 
+
+ ![image-20210108133428369](./_media/11._Reti_neurali__19.png)
+
+
+
+#### 5.2.3 Pooling layer 
+
+Un *pooling layer* prende in input l'output di un layer convoluzionale e produce un output più piccolo. La riduzione è effettuata mediante una *funzione di pooling* (es. funzione max) che aggrega i valori di una piccola regione intorno all'input. La funzione di pooling agisce su un quadrato di lato $f$ di valori di input. Per ottenere l'output completo, il quadrato viene fatto scorrere in lunghezza e larghezza di un valore di stride $s$. Più alti sono i valori $s$ ed $f$ e più piccolo sarà l'output. Valori troppo grandi di $f$ possono portare ad una perdita di informazione. 
+
+
+
+#### 5.2.4 CNN su immagini a colori
+
+In un'immagine a colori l'input è costituito da 3 canali (RGB). Ogni canale è formato da una matrice di valori (intensità dei pixel). In questo caso, il filtro applicato sia nel convolutional layer che nel pooling layer ha dimensione $f \times f \times 3$. Tutti i nodi di uno stesso layer utilizzeranno una matrice di $f \times f \times 3$ di pesi. 
+
+
+
+![VGG16 - Convolutional Network for Classification and Detection](./_media/11._Reti_neurali__20.png)
+
+<div style="page-break-after: always;"></div>
+
+
+
+### 5.3 Recurrent Neural Networks (RNNs)
+
+Una Recurrent Neural Network (RNN) è una rete neurale che può contenere dei cicli. L'output di un layer può diventare l'input per un layer posto precedentemente o per se stesso. Questa disposizione è equivalente ad una rete neurale in cui uno o più layer ricorrono più volte.  
+
+![image-20210108134856082](/home/charlemagne/.config/Typora/typora-user-images/image-20210108134856082.png)
+
+I layer ricorrenti possono essere utilizzati come memoria dello stato, per ricordare i valori osservati in passato. Fornendo una sequenza temporale di valori è possibile modellare un comportamento dinamico temporale che dipende dalle informazioni agli istanti di tempo precedenti. Ciò rende le RNN adatte alla predizione di valori successivi a partire da una sequenza di eventi osservati. In breve, mentre le CNN possono processare in maniera efficiente dati tabulari, le RNN sono progettate per gestire al meglio le informazioni sequenziali. Le applicazioni tipiche risiedono nel language processing e nel riconoscimento vocale. 
+
+
+
+#### 5.3.1 Struttura tipica di una RNN
+
+Definiamo l'input e l'output di un layer ricorrente come due sequenze $\bar{x} = (\bar{x}_1, \dots, \bar{x}_n)$ e $\bar{y} = (\bar{y}_1, \dots, \bar{y}_n)$.
+I pesi condivisi dai nodi del layer ricorrente sono rappresentati da 3 matrici $U, V, W$ come nella figura sottostante. Sia $\bar{s}_t$ uno stato nascosto che funziona da memoria delle informazioni rappresentate dalla sottosequenza $\bar{x}_1, \dots, \bar{x}_t$ osservata sino al tempo $t$. 
+
+<img src="./_media/11._Reti_neurali__21.png" alt="image-20210108143217529" style="margin-top:20px; margin-bottom:20px;" />
+
+Lo stato nascosto $\bar{s}_0$ è definito come vettore di zeri. Lo stato nascosto $\bar s_t$ al tempo $t$ si ottiene applicando una funzione di attivazione non lineare (es. sigmoid, tanh) considerando l'input al tempo $t$ e lo stato nascosto $\bar{s}_{t-1}$ al tempo $t-1$: 
+$$
+\bar{s}_t = f(U\bar{x}_t + W\bar{s}_{t-1} + \bar{b})
+$$
+Dove $\bar{b}$ è un vettore di bias. L'output $\bar{y}_t$ al tempo $t$ è ottenuto applicando una seconda funzione di attivazione (es. softmax) considerando lo stato nascosto al tempo $t$:
+$$
+\bar{y}_t = g(V\bar{s}_t + \bar{c})
+$$
+Dove $\bar{c}$ è un vettore di bias. 
+
+
+
+#### 5.3.2 Varianti
+
+In alcune applicazioni (es. la traduzione di una frase) è necessario un unico output da produrre alla fine del processo. In questo caso gli output prodotti ad ogni step dalla RNN vengono passati ad uno o più layer totalmente connessi che genereranno l'output finale. 
+
+![image-20210108144057143](/home/charlemagne/Scrivania/DiveIntoDataMining/_media/11._Reti_neurali__22.png)
+
+
+
+#### 5.3.3 Sequenze di lunghezza variabile
+
+Per gestire sequenze di lunghezza variabile si possono utilizzare due tecniche:
+
+* *Zero padding*: si fissa $n$ come lunghezza massima della sequenza che la RNN può gestire e, se una sequenza è più corta, si aggiungono zeri fino ad ottenere una sequenza lunga $n$. 
+* *Bucketing*: raggruppa le sequenze sulla base della loro lunghezza e costruisce una RNN diversa per ogni valore di lunghezza. 
+
+È possibile combinare le due tecniche: si costruiscono diversi bucket, ciascuno dei quali è in grado di gestire sequenze di lunghezza simile in un piccolo intervallo di valori. Si assegna la sequenza in input al bucket in grado di gestire sequenze della stessa lunghezza o di lunghezza leggermente più alta. In quest'ultimo caso si effettua il padding. 
