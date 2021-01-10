@@ -645,8 +645,8 @@ Una volta trovati i coefficienti $\Theta$ per il regressore lineare, dobbiamo tr
 
 Possiamo farlo invertendo la funzione logit come segue: 
 
-1) partiamo dalla espressione iniziale: $logit(p) = log \frac 1 {1-p}$
-2) utilizziamo l'esponenziale: $e^{logit(p)} = \frac 1 {1-p}$
+1) partiamo dalla espressione iniziale: $logit(p) = log \frac p {1-p}$
+2) utilizziamo l'esponenziale: $e^{logit(p)} = \frac p {1-p}$
 3) moltiplichiamo entrambi i termini: $(1-p) e^{logit(p)} = p$
 4) semplifichiamo: $e^{logit(p)} - pe^{logit(p)} = p$
 5) raccogliamo per la probabilità: $ p(1 + e^{logit(p)}) = e^{logit(p)}$
