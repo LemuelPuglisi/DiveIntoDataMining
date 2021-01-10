@@ -35,20 +35,9 @@ Ipotizziamo che dei documenti testuali siano gli oggetti e che delle frasi siano
 
  ### 2.3 Applicazione 3 - Web analysis
 
-Ipotizziamo che delle parole siano gli oggetti e che le pagine web siano i carrelli, poichè esse contengono le parole e le mettono in relazione. Parole che appaiono frequentemente insieme nelle pagine web potrebbero indicare una interessante relazione.  
+Ipotizziamo che delle parole siano gli oggetti e che le pagine web siano i carrelli, poichè esse contengono le parole e le mettono in relazione. Parole che appaiono frequentemente insieme nelle pagine web potrebbero indicare una interessante relazione. Affronteremo nel cap. 13 alcuni cenni di analisi testuale. 
 
 
-
-### 2.4 Words on the web 
-
-Molte applicazioni del data mining sul web coinvolgono le parole, ad esempio per clusterizzare siti web per il contenuto, distinguere i blog utili dai blog inutili, determinare il sentimento di articoli o di commenti, partizionare pagine restituite da una query ambigua. 
-
-Parole molto comuni vengono chiamate **stop words**. Esse raramente introducono una effettiva informazione e non aiutano a determinare il contenuto di un documento, vanno generalmente ignorate. Una metrica che ci aiuta a capire l'importanza di una parola è la **TF/IDF** (***Term Frequency over Inverse Document Frequency***). **TF** (*Term frequency*) è il numero di volte in cui la parola appare nei documenti, mentre **IDF** (*Inverse document frequency*) è il numero di documenti all'interno del cui appare. 
-
-* Le coniugazioni appaiono in molti documenti e molto spesso, non introducono informazione utile. 
-* Le parole informative (es. "Trading") appaiono in pochi documenti. Più volte appaiono in pochi documenti e più aiutano a determinare la natura di tali. 
-
-<div style="page-break-after: always;"></div>
 
 ## 3. Regole associative
 
@@ -58,7 +47,9 @@ $$
 $$
 ovvero: "Se il basket contiene gli oggetti $i_1, ..., i_k$ allora molto probabilmente conterrà anche $j$". Definiamo la **confidenza** (confidence) di una regola di associazione come la probabilità di $j$ dati $i_1, ..., i_k$.  
 
-<img src="./_media/1._Market_Basket_Analysis__1.png" alt="image-20201017103411250" style="zoom:50%; border: 4px solid #212121; border-radius:5px 5px 5px 5px; margin-top:20px;" />
+<img src="./_media/1._Market_Basket_Analysis__1.png" alt="image-20201017103411250" style="zoom:50%; border: 4px solid #212121; border-radius:5px 5px 5px 5px; margin-top:40px;" />
+
+
 
 
 
@@ -93,13 +84,17 @@ Vediamo adesso alcuni algoritmi che si occupano della ricerca di coppie frequent
 
 ### 4.1 Naive algorithm 
 
-Legge una sola volta l'intero file. Per ogni basket contenente n elementi, genera n(n-1)/2 paia e per ogni paio incrementa le sue occorrenze in una struttura apposita (es. matrice triangolare).  
-Tale algoritmo fallisce se (#items)<sup>2</sup> provoca un overflow in memoria primaria (gli item potrebbero essere dell'ordine dei miliardi). Supponiamo vi siano 10<sup>5</sup> elementi in memoria e quindi: 
+L'algoritmo naive legge una sola volta l'intero file e, per ogni basket contenente $n$ elementi, genera $\frac {n(n-1)} 2$ coppie da analizzare. Il numero di coppie è dato dalle combinazioni degli $n$ item in 2 posizioni, calcolabile attraverso il coefficiente binomiale: 
+$$
+\binom{n}{2} = \frac {n!} {2!(n-2)!} = 
+\frac {n(n-1)(n-2)!} {2(n-2)!} = 
+\frac {n(n-1)}{2}
+$$
+Definiamo una struttura apposita (es. una matrice) che contenga tutti gli item sia nelle righe che nelle colonne. Per ogni coppia di item all'interno del basket incrementa l'occorrenza della coppia nella struttura. Tale algoritmo fallisce se $\text{(#items)}^2$ provoca un overflow in memoria primaria (gli item potrebbero essere dell'ordine dei miliardi). Supponiamo vi siano 10<sup>5</sup> elementi in memoria e quindi: 
 $$
 \frac{10^5 * (10^5-1)}{2} \simeq 5*10^9 \space pairs
 $$
-Saranno necessari circa 20 GB di memoria primaria. 
-Vi sono 2 approcci tipici al conteggio delle occorrenze delle coppie: la matrice triangolare e la tabella di triple. 
+Saranno necessari circa 20 GB di memoria primaria. Vi sono 2 approcci tipici al conteggio delle occorrenze delle coppie: la matrice triangolare e la tabella di triple. 
 
 
 
