@@ -123,7 +123,7 @@ nbow(d)_i = \frac{bow(d)_i}{\sum_j bow(d)_j}
 $$
 Faremo riferimento alla *frequenza* di un termine $t_i$ (term frequency) rispetto ad un documento $d$ indicando la frequenza normalizzata di tale termine: 
 $$
-ft(d, t_i) = nbow(d)_i
+tf(d, t_i) = nbow(d)_i
 $$
 Dato che il conteggio dei termini è sempre positivo (al più nullo), la normalizzazione effettuata sarà del tutto equivalente alla normalizzazione L1 (deviazione assoluta). Il risultato delle due normalizzazioni rende molto simili (se non identici) i due grafici. 
 
