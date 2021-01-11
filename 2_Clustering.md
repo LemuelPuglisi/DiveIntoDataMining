@@ -64,7 +64,7 @@ In uno spazio non euclideo il concetto di centroide non è definito. In uno spaz
 
 Per alcuni spazi non euclidei (come le versioni discrete degli spazi euclidei, o spazi formati da vettori di interi) è possibile utilizzare le distanze euclidee già viste. Nel caso più generale occorre definire metriche alternative. 
 
-Es. con insiemi, **distanza di Jaccard**: Dati due insiemi T ed S, la distanza è definita come il rapporto tra la cardinalità dell'intersezione e la cardinalità dell'unione. 
+Es. con insiemi, **distanza di Jaccard**: Dati due insiemi T ed S, la distanza è definita come il complementare del rapporto tra la cardinalità dell'intersezione e la cardinalità dell'unione. 
 $$
 D(S,T)= 1 - \frac{|S \cap T|}{|S \cup T|}
 $$
