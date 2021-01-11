@@ -231,14 +231,9 @@ Elenchiamo alcuni criteri di terminazione comuni:
 
 Altre misure di distanza tra cluster che non includano i centrodi sono le seguenti: 
 
-**Single link** 
-La distanza tra due cluster X e Y è data dalla distanza più piccola di un elemento di X e uno di Y. 
-
-**Complete link** 
-La distanza tra due cluster X e Y è data dalla distanza più piccola di un elemento di X e uno di Y.
-
-**Average Link**
-La distanza tra due cluster X e Y è data dalla distanza media tra tutte le distanze di punti di X e Y. 
+* *Single link*: la distanza minima tra due punti in due cluster X ed Y. 
+* *Complete link*: la distanza massima tra due punti un due cluster X ed Y. 
+* *Average link*: la distanza media tra le distanze di tutti i punti di X con tutti i punti di Y. 
 
 
 
