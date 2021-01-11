@@ -18,7 +18,7 @@ Il classificatore $c$ effettuerà una predizione $\hat{y} = c(e)$ sulla classe d
 
 ### 1.2 Classificazione e predizione
 
-Ambo classificazione e predizione sono due metodi di tipo *supervised learning*. Entrambe utilizzano le feature delle osservazioni per classificare / predire un risultato. È possibile creare confusione tra le due tecniche, per cui evidenziamo la differenza principale: nella classificazione predice l'etichetta della classe categoriale di appartenenza (discreta o nominale), mentre la predizione modella funzioni continue e consente la predizione di dati sconosciuti o mancanti.
+Ambo classificazione e predizione sono due metodi di tipo *supervised learning*. Entrambe utilizzano le feature delle osservazioni per classificare / predire un risultato. È possibile creare confusione tra le due tecniche, per cui evidenziamo la differenza principale: la classificazione predice l'etichetta della classe categoriale di appartenenza (discreta o nominale), mentre la predizione modella funzioni continue e consente la predizione di dati sconosciuti o mancanti.
 
 ![image-20210103223629039](./_media/3._Classificazione__1.png)
 
@@ -185,7 +185,7 @@ build_decision_tree (S, attributes):
 
 #### 2.3.3 Splitting su attributi continui
 
-Nel caso di attributi continui occorre scegliere un valore di soglia, per cui lo splitting effettuato in questo caso dipende anche da questo parametro. Se l'attributo è continuo è necessario quindi calcolare più valori di goodness per lo stesso attributoe prendere come riferimento quello con la goodness più alta. Questo aggiunge un layer di complessità alla scelta degli attributi. 
+Nel caso di attributi continui occorre scegliere un valore di soglia, per cui lo splitting effettuato in questo caso dipende anche da questo parametro. Se l'attributo è continuo è necessario quindi calcolare più valori di goodness per lo stesso attributo e prendere come riferimento quello con la goodness più alta. Questo aggiunge un layer di complessità alla scelta degli attributi. 
 
 <div style="page-break-after: always;"></div>
 
@@ -280,7 +280,7 @@ Attributi che determinano molte partizioni con pochi elementi avranno un valore 
 
 
 
-### Gini index (algoritmo CART)
+#### 2.4.4 Gini index (algoritmo CART)
 
 Il **Gini index**, anche chiamato **Gini impurity**, misura l'impurità di un insieme di osservazioni $S_X$ associato ad un nodo dell'albero decisionale. Consideriamo una classe $C_i$ ed una tupla *x* di classe $C_i$ scelta a caso dal dataset *T*. Supponiamo di assegnare casualmente ad *x* una classe $C_j$ sulla base della distribuzione delle frequenze delle classi nel dataset. Il Gini index misura, per ogni classe, la probabilità che $i \ne j$. Chiamiamo $p_i$ la probabilità di scegliere una osservazione del dataset di classe $C_i$, la probabilità di scegliere una classe $C_j$ diversa da $C_i$ a partire dalla distribuzione delle frequenze delle classi è: 
 
