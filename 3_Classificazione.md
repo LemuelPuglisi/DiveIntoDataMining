@@ -951,7 +951,7 @@ $$
 $$
 Altrimenti, se l'i-esimo punto non è classificato correttamente, ovvero si trova tra  $H_1$ e $H_2$, $\epsilon_i$ è proporzionale alla distanza del punto dal margine della classe corrispondente; ovvero più è distante dal margine della classe corretta, più il valore $\epsilon_i$ è alto. $\epsilon_i$ è il più piccolo numero non negativo che soddisfa la seguente disuguaglianza: 
 $$
-y_i(\bar{w} * \bar{x}_i - b) \le 1 - \epsilon_i
+y_i(\bar{w} * \bar{x}_i - b) \ge 1 - \epsilon_i
 $$
 
 <div style="page-break-after: always;"></div>
@@ -962,7 +962,7 @@ $$
 $$
 Soggetto alle condizioni: 
 $$
-y_i(\bar{w} * \bar{x}_i - b) \le 1 - \epsilon_i \space\space\space\space\space 1 < i< n \\
+y_i(\bar{w} * \bar{x}_i - b) \ge 1 - \epsilon_i \space\space\space\space\space 1 < i< n \\
 \epsilon_i \ge 0 \space\space\space\space \space 1 < i< n
 $$
 Più piccolo è il valore $\lambda$, più trascurabile è $\lambda*||\bar{w}||^2$, ovvero meno importante è la dimensione del margine. Variando $\lambda$ possiamo controllare il peso della dimensione del margine nel calcolo dell'iperpiano separatore. 
