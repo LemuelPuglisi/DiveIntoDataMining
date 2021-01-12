@@ -800,7 +800,21 @@ Dove $W_h, W_i, W_f, U_h, U_i, U_f$ sono matrici di pesi e $b_h, b_i, b_f$ sono 
 
 
 
-#### 5.4.3 Calcolo dell'output 
+#### 5.4.3 Calcolo dello stato nascosto
+
+Per calcolare lo stato nascosco (ovvero la memoria corrente) è necessario calcolare l'output gate
+$$
+\bar{o}_t = \sigma(W_o \bar{s}_{t-1} + U_o \bar{x}_t + \bar{b}_o)
+$$
+E aggiornare la memoria come segue
+$$
+\bar{s}_t = \tanh(\bar{c}_t \circ \bar{o}_t)
+$$
+Dove $W_o$ è una matrice di pesi e $\bar{b}_o$ è un vettore di bias. 
+
+
+
+#### 5.4.4 Calcolo dell'output 
 
 L'output è calcolato allo stesso modo di qualsiasi RNN: 
 $$
