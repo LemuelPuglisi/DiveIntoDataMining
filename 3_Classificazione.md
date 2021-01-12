@@ -645,7 +645,7 @@ $$
 Sostituendo la likelihood con la formula analitica della distribuzione multinomiale: 
 $$
 f(x_1, \dots, x_s) = \text{arg}\max_c P(c) \left[  
-\frac{(\sum_{i} x_i)!}{x_1!\times \dots \times x_n!}
+\frac{(\sum_{i} x_i)!}{x_1!\times \dots \times x_s!}
 p_{c1}^{x_1} \times \dots \times p_{cs}^{x_s}
 \right]
 $$
@@ -689,7 +689,7 @@ I classificatori discriminativi cercano di predire la classe direttamente a part
 
 #### 4.1.1 Differenze tra generativo e discriminativo
 
-Il classificatore *generativo* sviluppa un modello probabilistico sui dati a partire da un insieme di assunzioni e predice la classe più probabile per un nuovo dati. Il classificatore *discriminativo* costruisce una funzione di decisione $F$ a partire dai dati osservati stimando pesi calcolati per ogni attributo e dipendenti dai valori dell'attributo stesso. Se $X$ è un nuovo dato, si calcola $F(X)$ ed il valore ottenuto è la classe di $X$. 
+Il classificatore *generativo* sviluppa un modello probabilistico sui dati a partire da un insieme di assunzioni e predice la classe più probabile per un nuovo dato. Il classificatore *discriminativo* costruisce una funzione di decisione $F$ a partire dai dati osservati stimando pesi calcolati per ogni attributo e dipendenti dai valori dell'attributo stesso. Se $X$ è un nuovo dato, si calcola $F(X)$ ed il valore ottenuto è la classe di $X$. 
 
 
 
@@ -790,7 +790,7 @@ N.B. L'errore medio di classificazione è ottenuto attraverso la seguente formul
 $$
 E = \frac{1}{n} \sum_{i=1}^n |d_i - y_j(t)|
 $$
-Nella pratica, il passo 2 viene iterato affinché la retta (o in generale, l'iperpiano) trovi i coefficienti adatti a separare l'intero dataset in due classi distinte. Ipotizziamo vi che al tempo *t* vi sia un errore, l'aggiornamento dei pesi ridefinirà ognuno dei pesi (da utilizzare al prossimo passo $t + 1$) come segue: 
+Nella pratica, il passo 2 viene iterato affinché la retta (o in generale, l'iperpiano) trovi i coefficienti adatti a separare l'intero dataset in due classi distinte. Ipotizziamo che al tempo *t* vi sia un errore, l'aggiornamento dei pesi ridefinirà ognuno dei pesi (da utilizzare al prossimo passo $t + 1$) come segue: 
 $$
 w_j(t+1) = w_j(t) + r*(d_i - y_i(t)) * x_{i,j}
 $$
