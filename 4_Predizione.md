@@ -42,7 +42,7 @@ l'insieme degli output corretti (o etichette di ground truth), e:
 $$
 \hat Y_{TE} = \{\hat y^i: \hat y^i = f(x^i), x^i \in TE \}
 $$
-l'insieme di output predetti. Idealmente vorremmo che gli output predetti siano quanto più vicini agli output corretti (nel caso migliore $\bar Y_{te} = Y_{te}$). Dal momento in cui gli elementi di entrambi gli insiemi sono vettori di egual dimensione, definiremo le misure di performance come misurazioni di vicinanza o verosimiglianza tra gli output predetti e gli output corretti.  
+l'insieme di output predetti. Idealmente vorremmo che gli output predetti siano quanto più vicini agli output corretti (nel caso migliore $\hat Y_{te} = Y_{te}$). Dal momento in cui gli elementi di entrambi gli insiemi sono vettori di egual dimensione, definiremo le misure di performance come misurazioni di vicinanza o verosimiglianza tra gli output predetti e gli output corretti.  
 
 
 
@@ -133,7 +133,7 @@ Disegniamo un plot del dataset ponendo il numero medio di stanze sull'asse delle
 
 ![image-20201205112612906](./_media/4._Predizione__1.png)
 
-Vorremmo idealmente trovare una funzione $f$ che riesca ad approssimare il prezzo medio delle case $y$ dato uun numero di stanze medio $x$. Dal plot osserviamo che il prezzo aumenta proporzionalmente al numero di stanze. Calcolando la covarianza otteniamo $Cov(x,y) = 4.49$, il che è un'altra conferma della correlazione tra le due variabili. Esse seguono circa un andamento lineare, quindi sono approssimativamente distribuite lungo una retta: 
+Vorremmo idealmente trovare una funzione $f$ che riesca ad approssimare il prezzo medio delle case $y$ dato un numero di stanze medio $x$. Dal plot osserviamo che il prezzo aumenta proporzionalmente al numero di stanze. Calcolando la covarianza otteniamo $Cov(x,y) = 4.49$, il che è un'altra conferma della correlazione tra le due variabili. Esse seguono circa un andamento lineare, quindi sono approssimativamente distribuite lungo una retta: 
 
 ![image-20201205113313888](./_media/4._Predizione__2.png)
 
@@ -149,9 +149,9 @@ f(x) = \theta_0 + \theta_1x
 $$
 Chiamiamo la funzione $f$ **modello lineare** o **regressore lineare**, dove $\theta_0$ e $\theta_1$ sono i parametri del modello. Allenare un modello lineare significa trovare quei valori nei parametri $\theta_0$ e $\theta_1$ tale che $f(x)$ dia una buona predizione di $y$. Vedremo due metodi per fare ciò: il metodo dei minimi quadrati e la discesa del gradiente. 
 
-Consideriamo il precedente esempio e immaginiamo che qualcuno abbia allenato il modello lineare e che i parametri siano $\theta_0 = -34.17$ e $\theta_1 = 9.10$, per cui il nostro regressore lineare sarà così definito: 
+Consideriamo il precedente esempio e immaginiamo che qualcuno abbia allenato il modello lineare e che i parametri siano $\theta_0 = -34.67$ e $\theta_1 = 9.10$, per cui il nostro regressore lineare sarà così definito: 
 $$
-\hat y^i = f(x^i) = (9.1)x - 34.15 
+\hat y^i = f(x^i) = (9.1)x - 34.67
 $$
 Se proviamo a plottare la linea in figura, essa sarà quella retta con maggiore densità lineare e avrà, nel caso migliore, una misura di errore bassa. 
 
@@ -210,7 +210,7 @@ I parametri sono quindi $\Theta =(\theta_0, \theta_1, ..., \theta_n)$. Allenare 
 
 Per convenzione e semplicità di espressione, poniamo $x_0 = 1$ e scriviamo il modello lineare $f$ come segue: 
 $$
-f(\bar x) = \sum_{i=1}^n \theta_i x_i
+f(\bar x) = \sum_{i=0}^n \theta_i x_i
 $$
 Cosicché l'intercetta sia moltiplicata ad 1, e quindi non vari. 
 
@@ -221,7 +221,7 @@ $$
 
 <div style="page-break-after: always;"></div>
 
-Essendo la somma delle dimensione uguale a 3, possiamo visualizzare un plot tridimensionale dei nostri punti: 
+Essendo la somma delle dimensioni uguale a 3, possiamo visualizzare un plot tridimensionale dei nostri punti: 
 
 ![image-20201205122850442](./_media/4._Predizione__4.png)
 
@@ -269,7 +269,7 @@ Ognuno dei regressori $f_i$ ha il proprio insieme di parametri $\Theta_i$, calco
 
 Per capire come tirar fuori i parametri $\Theta$ dal regressore ci concentreremo sul caso della regressione multipla, più generico rispetto alla regressione lineare e che pone le fondamenta per quella multivariata. Avremo quindi un regressore $f_{\Theta}$: 
 $$
-f_{\Theta}(\bar x) = \sum_{i=1}^n \theta_i x_i = \Theta^T \bar x
+f_{\Theta}(\bar x) = \sum_{i=0}^n \theta_i x_i = \Theta^T \bar x
 $$
 Dove $f_{\Theta}$ indica il fatto che il regressore $f$ dipenda dai parametri $\Theta$. Allenare il regressore significa lasciare che il regressore apprenda quali siano i parametri $\Theta$ che minimizzino l'errore di predizione nel training set $TR$. Possiamo quantificare l'errore attraverso una funzione costo: 
 $$
