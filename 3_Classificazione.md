@@ -1077,7 +1077,7 @@ I metodi di apprendimento lazy hanno un tempo di predizione più alto, mentre il
 
 Supponiamo di avere in input un nuovo dato $x$ da classificare. Una buona idea sarebbe quella di assegnare a tale dato la classe dell'osservazione $\bar{x}$ più vicina. È necessario quindi utilizzare una funzione distanza $d(x,\bar x)$ da minimizzare, e molto spesso tale funzione corrisponde alla distanza euclidea: 
 $$
-d(x,\bar x) = ||x - \bar x||_2 = \frac 1 n \sqrt{\sum_{i=1}^n (x - \bar x)^2}
+d(x,\bar x) = ||x - \bar x||_2 = \sqrt{\sum_{i=1}^n (x_i - \bar x_i)^2}
 $$
 Dove $n$ è il numero di feature delle osservazioni. In tal caso la funzione $f$ di classificazione non dovrà fare altro che trovare quel dato del training set $\bar x$ che minimizzi la funzione distanza $d$: 
 $$
