@@ -309,7 +309,7 @@ Dove $\bar y$ e $\bar x$ sono i valori medi. È possibile estendere il metodo de
 
 Abbiamo letto nel problema dell'apprendimento che l'insieme $\Theta$ di parametri assunti dal modello $f$ deve minimizzare la funzione costo $J$. Un approccio naïve potrebbe suggerire di provare tutte le possibili combinazioni di $\Theta$, ma essendo un numero massivo risulta subito un cattivo approccio.
 
-Per risolvere tale problema si possono utilizzare molte strategia di ottimizzazione: quella che utilizzeremo prende il nome di algoritmo di discesa del gradiente, il quale permette di minimizzare qualsiasi funzione **differenziabile** rispetto ai propri parametri.
+Per risolvere tale problema si possono utilizzare molte strategie di ottimizzazione: quella che utilizzeremo prende il nome di algoritmo di discesa del gradiente, il quale permette di minimizzare qualsiasi funzione **differenziabile** rispetto ai propri parametri.
 
  
 
@@ -453,7 +453,7 @@ La regola di aggiornamento può essere scritta come segue:
 $$
 \theta_j = \theta_j - \gamma \times (\sum_{i=1}^{|TR|} (f_{\Theta}(x^i) - y^i) * x^i_j)
 $$
-Con la regola di aggiornamento abbiamo tutto ciò che ci serve per implementare l'algoritmo computazionalmente, utilizzando criteri di terminazione basati sul numero di terazioni o sulla soglia di aggiornamento. 
+Con la regola di aggiornamento abbiamo tutto ciò che ci serve per implementare l'algoritmo computazionalmente, utilizzando criteri di terminazione basati sul numero di iterazioni o sulla soglia di aggiornamento. 
 
 
 
@@ -468,7 +468,7 @@ Il learning rate $\gamma$ è un iperparametro da determinare. Possiamo utilizzar
 
 ## 5. Regressione non lineare
 
-La regressione lineare risulta limitante nei casi in cui la relazione tra le variabili indipendenti e la variabile indipendente è chiaramente non lineare. Consideriamo ad esempio il seguente plot: 
+La regressione lineare risulta limitante nei casi in cui la relazione tra le variabili indipendenti e la variabile dipendente è chiaramente non lineare. Consideriamo ad esempio il seguente plot: 
 
 ![image-20201205170903862](./_media/4._Predizione__10.png)
 
@@ -507,7 +507,7 @@ $$
 f(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 \Longrightarrow 
 f(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2 + \theta_3 x_2 + \theta_4 x_2^2 + \theta_5 x_1x_2
 $$
-A causa della presenza dei termini di interazione, all'aumentare delle feature in input il numero di coefficienti da calcolare aumenta in maniera massiva e la computazione diventa onerosa.  Se si effettua la regressione polinomiale con un grado $d$ molto alto è possibile incappare nel problema dell'**overfitting**.
+È possibile ottenere i termini attraverso il [teorema multinomiale](https://it.wikipedia.org/wiki/Coefficiente_multinomiale). A causa della presenza dei termini di interazione, all'aumentare delle feature in input il numero di coefficienti da calcolare aumenta in maniera massiva e la computazione diventa onerosa.  Se si effettua la regressione polinomiale con un grado $d$ molto alto è possibile incappare nel problema dell'**overfitting**.
 
 Dal punto di vista procedurale, il modo più semplice per implementare la regressione polinomiale consiste nel dare in pasto ad un regressore lineare il numero finale di feature. Anziché costruire un regressore polinomiale per degli input $(x_1, x_2)$ che esegua la polinomizzazione al grado $d$, potremmo (supposto $d=2$) utilizzare un regressore lineare mappando gli input originali $(x_1, x_2, x_1^2, x_1x_2, x_2^2)$ ed ottenere lo stesso risultato. 
 
@@ -541,12 +541,12 @@ Se preferiamo trovare soluzioni meno flessibili per limitare la possibilità di 
 
 Il termine di regolarizzazione deve crescere proporzionalmente ai coefficienti, per cui possiamo utilizzare una semplice somma di quadrati: 
 $$
-\sum_{i=1}^n \theta_i^2
+\sum_{i=0}^n \theta_i^2
 $$
 Il processo per cui la funzione costo $J$ viene modificata aggiungendo il termine di regolarizzazione per bilanciare la grandezza dei coefficienti è chiamato **regolarizzazione**. La funzione costo $J$ è ri-definita come segue: 
 $$
 J(\Theta) = \frac 1 2 \sum_{i=1}^{|TR|} \left[f_{\Theta}(x^i) - y^i\right]^2 
-+ \lambda \sum_{i=1}^n \theta_i^2
++ \lambda \sum_{i=0}^n \theta_i^2
 $$
 Dove il valore $\lambda$ serve a bilanciare quanto la grandezza dei coefficienti influenzi la scelta dei coefficienti stessi. È un iperparametro da determinare attraverso un validation set. Questo tipo di regolarizzazione prende il nome di **regolarizzazione L2** poiché il termine di regolarizzazione non è altro che la **norma L2**. Il tipo di regressione considerata prende il nome di **Ridge regression**. 
 
@@ -556,8 +556,9 @@ Dove il valore $\lambda$ serve a bilanciare quanto la grandezza dei coefficienti
 
 La nuova funzione costo $J$ è ancora differenziabile rispetto ai parametri $\theta_j$, il che è fondamentale per l'implementazione di un algoritmo di discesa del gradiente. Lo step di aggiornamento sarà adesso: 
 $$
-\theta_j = \theta_j - \gamma \times (\sum_{i=1}^{|TR|} (f_{\Theta}(x^i) - y^i) * x^i_j) 
+\theta_j = \theta_j - \gamma \times \left\{ \sum_{i=1}^{|TR|} (f_{\Theta}(x^i) - y^i) * x^i_j) 
 - \frac{\partial}{\partial \theta_j}\left[ \lambda \sum_{i=1}^n \theta_i^2 \right]
+\right\}
 $$
 Notiamo che: 
 $$
@@ -566,8 +567,9 @@ $$
 $$
 Per cui scriviamo lo step di aggiornamento come segue: 
 $$
-\theta_j = \theta_j - \gamma \times (\sum_{i=1}^{|TR|} (f_{\Theta}(x^i) - y^i) * x^i_j) 
+\theta_j = \theta_j - \gamma \times \left\{ (\sum_{i=1}^{|TR|} (f_{\Theta}(x^i) - y^i) * x^i_j) 
 - 2\lambda\theta_j
+\right\}
 $$
 L'aggiornamento è analogo al precedente a meno di un fattore penalizzante $2\lambda\theta_j$, Questa regolarizzazione è anche chiamata **decadimento del peso** (*weight decay*) per indicare che i coefficienti (pesi) debbano decadere con il tempo per limitare la crescita. 
 
