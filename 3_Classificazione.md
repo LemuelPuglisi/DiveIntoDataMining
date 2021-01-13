@@ -1204,7 +1204,7 @@ Supponiamo di avere un dataset con due sole classi, una indicata come $P$ (posit
 | False positive | tuple di classe N classificate come P | $F_{pos}$ |
 | False negative | tuple di classe P classificate come N | $F_{neg}$ |
 
-Vedremo adesso una lista di metriche possibili solo nel caso di un classificatore binario, che evidenziamo particolari aspetti del classificatore. 
+Vedremo adesso una lista di metriche possibili solo nel caso di un classificatore binario, che evidenziano particolari aspetti del classificatore. 
 
 
 
@@ -1247,11 +1247,11 @@ Se sia la precision che la recall hanno un valore alto, allo lo score F1 sarà a
 
 #### 8.3.2 Soglia discriminativa nei classificatori binari
 
-Se il classificatore in analisi utilizza un valore soglia $\sigma$ per effettuare la classificazione, allora le misure di performance vanno rivalutate al variare della dosglia discriminativa. 
+Se il classificatore in analisi utilizza un valore soglia $\sigma$ per effettuare la classificazione, allora le misure di performance vanno rivalutate al variare della soglia discriminativa. 
 
 
 
-### 8.4 Receiver Operating Characteristic Curva (ROC)
+### 8.4 Receiver Operating Characteristic Curve (ROC)
 
 La *curva ROC* rappresenta il True Positive Rate (TPR), detto anche *numero di hits*, in funzione del False Positive Rate (FPR), detto anche numero di falsi allarmi, al variare della soglia $\sigma$. Vediamo due casi limite: 
 
@@ -1259,7 +1259,7 @@ a) Nel caso limite in cui la soglia $\sigma$ sia così alta che tutte le tuple s
 
 b) Nel caso limite in cui la soglia $\sigma$ sia cosi bassa che tutte le tuple sono classificate come positive, allora significa che tutte le tuple negative sono classificate come positive, per cui il False Positive rate è massimo (FPR = 1), ed anche tutte le tuple positive sono classificate come positive (TPR = 1). 
 
-Al dminuire della soglia, aumenta il numero di tuple classificate come positive e contestualmente entrambi gli indici aumentano (in misura diversa). La situazione ideale è quella in cui TPR aumenta fino a raggiungere il valore 1 ed FPR si mantiene pari a 0, per cui si ha il miglior classificatore. La curva roc diventa banalmente una funzione scala.  Un classificatore random avrà sempre uguali valori di TPR ed FPR al variare di $\sigma$. 
+Al diminuire della soglia, aumenta il numero di tuple classificate come positive e contestualmente entrambi gli indici aumentano (in misura diversa). La situazione ideale è quella in cui TPR aumenta fino a raggiungere il valore 1 ed FPR si mantiene pari a 0, per cui si ha il miglior classificatore. La curva roc diventa banalmente una funzione scala.  Un classificatore random avrà sempre uguali valori di TPR ed FPR al variare di $\sigma$. 
 
 <img src="./_media/3._Classificazione__19.png" alt="image-20201212141142291" style="zoom: 50%;" />
 
@@ -1271,7 +1271,7 @@ La curva ROC è ottima nel caso di dataset *bilanciati*, mentre in presenza di d
 
 a) Nel caso limite in cui la soglia $\sigma$ sia così alta che tutte le tuple sono classificate come negative, allora significa che nessuna tupla sarà classificata come positiva. La recall sarà nulla poiché nessuna osservazione positiva sarà rilevata, mentre la precision sarà massima poiché tutte le osservazioni positive rilevate (0) sono correttamente classificate. 
 
-b) Nel caso limite in cui la soglia $\sigma$ sia cosi bassa che tutte le tuple sono classificate come positive, allora significa che tutte le tuple positive verranno rilevate, per cui la recall = 1. Tutta via la precision sarà bassa poiché il numero di osservazioni positive classificate correttamente è diviso alla cardinalità del dataset.  
+b) Nel caso limite in cui la soglia $\sigma$ sia cosi bassa che tutte le tuple sono classificate come positive, allora significa che tutte le tuple positive verranno rilevate, per cui la recall = 1. Tutta via la precision sarà bassa poiché il numero di osservazioni positive classificate correttamente sarà diviso per la cardinalità del dataset.  
 
 <img src="./_media/3._Classificazione__20.png" alt="image-20201212141613907" style="zoom:50%;" />
 
@@ -1295,8 +1295,7 @@ Fissata una percentuale $X$, il dataset viene partizionato in due set indipenden
 
 
 
-### 8.7.2 K-fold cross-validation
+#### 8.7.2 K-fold cross-validation
 
-Fissato $k \in \N$, si partiziona il dataset in $k$ partizioni $D_1, ..., D_k$ approssimativamente della stessa dimensione. Alla 
-i-esima iterazione ($1 < i <  k$) si considera la partizione $D_i$ come test set ed il resto come training set. Una estremizzazione del metodo è il *leave one out*, dove $k$ è il numero di tuple ed il test set è di volta in volta una sola tupla. 
+Fissato $k \in \N$, si partiziona il dataset in $k$ partizioni $D_1, ..., D_k$ approssimativamente della stessa dimensione. Alla i-esima iterazione ($1 < i <  k$) si considera la partizione $D_i$ come test set ed il resto come training set. Una estremizzazione del metodo è il *leave one out*, dove $k$ è il numero di tuple ed il test set è di volta in volta una sola tupla. 
 
