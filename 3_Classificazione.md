@@ -649,7 +649,7 @@ f(x_1, \dots, x_s) = \text{arg}\max_c P(c) \left[
 p_{c1}^{x_1} \times \dots \times p_{cs}^{x_s}
 \right]
 $$
-Il rapporto $\frac{(\sum_{i} x_i)!}{x_1!\times \dots \times x_n!}$ è analogo qualunque sia la sequenza in input, per cui massimizzare tale espressione equivale a massimizzare: 
+Il rapporto $\frac{(\sum_{i} x_i)!}{x_1!\times \dots \times x_n!}$ è analogo qualunque sia la classe $c$ considerata, per cui massimizzare tale espressione equivale a massimizzare: 
 $$
 f(x_1, \dots, x_s) = \text{arg}\max_c P(c) \left[  
 
@@ -855,7 +855,7 @@ y_i = \begin{cases}
 -1 \space if \space class(x_i) = -1 \\
 \end{cases}
 $$
-Le condizione vengono ridotte alla seguente espressione: 
+Le condizioni vengono ridotte alla seguente espressione: 
 $$
 (3.1) \space y_i(\bar{w} * \bar{x} + b) \ge 1
 $$
