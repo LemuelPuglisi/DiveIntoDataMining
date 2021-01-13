@@ -611,7 +611,7 @@ Questa funzione ideale mappa gli input nel range $\{0,1\}$ e satura a $0$ ed $1$
 
 Vorremmo trovare una trasformazione della probabilità che mappi i valori da $[0,1]$ a $(-\infty, +\infty)$ e che renda possibile l'approssimazione delle probabilità attraverso una funzione lineare. 
 
-Sia $p = P(y = 1\mid x)$ la probabilità che che un esempio sia positivo. Considereremo la funzione **dispari** (*odd function*) di $p$ la misura della proporzione tra probabilità che l'esempio sia positivo e quella che l'esempio sia negativo: 
+Sia $p = P(y = 1\mid x)$ la probabilità che un esempio sia positivo. Considereremo la funzione **dispari** (*odd function*) di $p$ la misura della proporzione tra probabilità che l'esempio sia positivo e quella che l'esempio sia negativo: 
 $$
 odd(p) = \frac p {1-p}
 $$
@@ -643,7 +643,7 @@ Adesso che la funzione logit mappa le probabilità in uno spazio in cui si dispo
 $$
 logit(p) \approx \theta_0x_0 + \theta_1x_1 + ... + \theta_nx_n = \Theta^Tx
 $$
-Una volta trovati i coefficienti $\Theta$ per il regressore lineare, dobbiamo trovare il metodo per estrapolare la probabilità dai risultato della funzione logit, quindi effettuare una mappatura inversa a quella iniziale: $(- \infty, +\infty) \to (0,1)$. 
+Una volta trovati i coefficienti $\Theta$ per il regressore lineare, dobbiamo trovare il metodo per estrapolare la probabilità dai risultati della funzione logit, quindi effettuare una mappatura inversa a quella iniziale: $(- \infty, +\infty) \to (0,1)$. 
 
 Possiamo farlo invertendo la funzione logit come segue: 
 
@@ -712,21 +712,29 @@ L(\Theta) = P(Y\mid X; \Theta)
 $$
 Se assumiamo che tutte le osservazioni del training set sono indipendenti, allora la likelihood potrà essere espressa come segue: 
 $$
-L(\Theta) = \prod_{i=1}^{|TR|} P(y^{(i)} \mid x^{(i)}; \Theta) = 
+L(\Theta) = \prod_{i=1}^{|TR|} P(y^{(i)} \mid x^{(i)}; \Theta) =
+\prod_{i=1}^{|TR|} 
 (f_{\Theta}(x^{(i)}))^{y^{(i)}}(1 - f_{\Theta}(x^{(i)}))^{1-y^{(i)}}
 $$
 Massimizzare tale espressione è analogo a massimizzare il logaritmo negativo della likelihood (*negative log likelihood*, nll): 
 $$
-nll(\Theta) = - \log L(\Theta) = - \sum_{i=1}^{|TR|} \left[ 
+nll(\Theta) = - \log L(\Theta) = - \log \sum_{i=1}^{|TR|} \left[ 
 	y^{(i)}f_{\Theta}(x^{(i)}) + (1-y^{(i)})(1 - f_{\Theta}(x^{(i)}))
+\right] = \\
+= - \sum_{i=1}^{|TR|} \log\left[ 
+	y^{(i)}f_{\Theta}(x^{(i)}) + (1-y^{(i)})(1 - f_{\Theta}(x^{(i)}))
+\right] = \\= \\
+= - \sum_{i=1}^{|TR|} \left[
+y^{(i)} \log {f_{\Theta}}(x^{(i)}) + (1 - y^{(i)})\log(1 - {f_{\Theta}}(x^{(i)}))
 \right]
 $$
 Definiremo la funzione costo $J$: 
 $$
-J(\Theta) = nll(\Theta) = - \log L(\Theta) = - \sum_{i=1}^{|TR|} \left[ 
-	y^{(i)}f_{\Theta}(x^{(i)}) + (1-y^{(i)})(1 - f_{\Theta}(x^{(i)}))
+J(\Theta) = nll(\Theta) = - \log L(\Theta) = - \sum_{i=1}^{|TR|} \left[
+y^{(i)} \log {f_{\Theta}}(x^{(i)}) + (1 - y^{(i)})\log(1 - {f_{\Theta}}(x^{(i)}))
 \right]
 $$
+
 
 
 #### 6.4.2 Applicare la discesa del gradiente
@@ -787,7 +795,7 @@ Per cui il coefficiente angolare è $m = - \frac {\theta_1} {\theta_2}$ e l'inte
 
 È possibile estendere il metodo della regressione logistica attraverso varie tecniche, tra cui la *one vs all*, la *one vs one* e la *softmax regression*. Vedremo in particolare come funziona la *one vs all*. 
 
-L'approccio **one-vs-all** permette di trasformare il problema della classificazione multiclasse (con più di 2 classi) in un insieme di problemi di classificazione binaria. Ogni sottoproblema può essere risolto attraverso un classificatore binario (es. il regressore logistico). Oltre al classificatore binario, è necessario anche l'output contenga anche un valore di confidenza (**confidence value**), come un probabilità. Questo è necessario per confrontare i risultati di tutti i classificatori e capire quale potrebbe essere quello corretto. 
+L'approccio **one-vs-all** permette di trasformare il problema della classificazione multiclasse (con più di 2 classi) in un insieme di problemi di classificazione binaria. Ogni sottoproblema può essere risolto attraverso un classificatore binario (es. il regressore logistico). Oltre al classificatore binario, è necessario che l'output contenga anche un valore di confidenza (**confidence value**), come un probabilità. Questo è necessario per confrontare i risultati di tutti i classificatori e capire quale potrebbe essere quello corretto. 
 
 <img src="./_media/4._Predizione__23.png" alt="image-20201208200958033" style="margin-top:30px;" />
 
