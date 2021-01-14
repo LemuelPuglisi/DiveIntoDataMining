@@ -60,7 +60,7 @@ $$
 
 ### 2.2 Spazi non euclidei
 
-In uno spazio non euclideo il concetto di centroide non è definito. In uno spazio metrico non euclideo si può definire il concetto di **1-mediana** come un punto che minimizza la distanza media (o equivalentemente la somma) delle distanza degli altri punti dell'insieme. Esempi di spazi non euclidei sono spazi in cui gli oggetti sono insiemi o stringhe. 
+In uno spazio non euclideo il concetto di centroide non è definito. Tuttavia, si può definire il concetto di **1-mediana** come un punto che minimizza la distanza media (o equivalentemente la somma) delle distanza degli altri punti dell'insieme. Esempi di spazi non euclidei sono spazi in cui gli oggetti sono insiemi o stringhe. 
 
 Per alcuni spazi non euclidei (come le versioni discrete degli spazi euclidei, o spazi formati da vettori di interi) è possibile utilizzare le distanze euclidee già viste. Nel caso più generale occorre definire metriche alternative. 
 
@@ -138,7 +138,7 @@ Ciascun punto viene inizialmente posto in un cluster diverso e successivamente i
 L'insieme di punti viene partizionato in *k* cluster, in modo che ciascun punto appartenga ad uno e un solo cluster. Dopo aver stimato dei cluster iniziali, i punti vengono presi in considerazione seguendo un certo ordine e assegnati al cluster più adatto. Alcune varianti permettono di non assegnare un punto a nessun cluster se questo è un **outlier** (cioè è isolato e lontano dai vari cluster). Rappresentanti di questa categoria sono gli algoritmi **k-means**.
 
 **3) Metodi basati sulla densità**
-I cluster prodotti inizialmente vengono estesi fino a quando la densità (ovvero il numero di punti) in un intorno più o meno grande supera una certa soglia. Tali metodi sono in grado di rilevare outlier e cluster di qualunque forma (non sono sferica come nel partizionamento). Esempi di questa classe sono DBSCAN e OPTICS. 
+I cluster prodotti inizialmente vengono estesi fino a quando la densità (ovvero il numero di punti) in un intorno più o meno grande supera una certa soglia. Tali metodi sono in grado di rilevare outlier e cluster di qualunque forma (non solo sferica come nel partizionamento). Esempi di questa classe sono DBSCAN e OPTICS. 
 
 **4) Metodi basati sulla griglia**
 Lo spazio viene quantizzato in un numero finito di celle che formano una struttura a griglia. Tutte le operazioni di clustering vengono quindi effettuate sullo spazio quantizzato, garantendo un tempo di elaborazione veloce, dipendente principalmente dal numero di celle di ogni dimensione dello spazio quantizzato. Un esempio è l'algoritmo STING.
@@ -158,22 +158,19 @@ Es. Se in un insieme di oggetti avessimo tanti attributi booleani rispetto ad un
 
 > Al crescere del numero di features, il numero di dati necessari a rendere il clustering effettivamente utile aumenta in maniera esponenziale. 
 
-*In generale*, quasi tutte le coppie di punti in un insieme finito, definito in uno spazio con moltissime dimensioni, saranno equidistanti tra loro. Se consideriamo *n* valori scelti a caso tra 0 e 1, ci aspettiamo che alcune coppie di punti siano vicine e altre lontane tra loro. È possibile dimostrare che la distanza media tra due punti è $\frac{1}{3}$. 
+*In generale*, quasi tutte le coppie di punti in un insieme finito, definito in uno spazio con moltissime dimensioni, saranno equidistanti tra loro. 
 
-Consideriamo due punti $x=(x_1, ..., x_d)$ e  $y=(y_1, ..., y_d)$ in uno spazio d-dimensionale. La **distanza euclidea** tra x e y è data da: 
+### 4.1 Distribuzione delle distanze in spazi ad alta dimensionalità 
+
+Consideriamo $n$ valori $d$-dimensionali; supponiamo che le componenti varino casualmente nel range $[0,1]$. Supponiamo che $d$ sia molto grande e misuriamo la distanza tra i punti attraverso la distanza euclidea. Siano $x=(x_1, ..., x_d)$ e  $y=(y_1, ..., y_d)$ due punti, la distanza è calcolata come segue
 $$
 D(x,y) = \sqrt{\sum_{i=1}^d (x_i - y_i)^2}
 $$
- Dato che per ipotesi il valore *d* è molto grande, è molto probabile che esista almeno una componente i-esima tale che $|x_i - y_i|$ sia molto vicino al valore 1. Da ciò segue che: 
-
-- D(x, y) ha un limite inferiore di 1 
-- D(x, y) ha un limite superiore di $\sqrt{d}$ nel caso in cui $\forall i \space |x_i - y_i| = 1$. 
-
-Il punto di convergenza tra i due limiti è la media, per cui quasi tutti i punti hanno una distanza *tra loro* vicina alla media $\frac{\sqrt{d}}{3}$. 
+Essendo $d$ molto grande, con alta probabilità vi saranno due componenti la cui differenza sarà molto vicina ad 1, quindi il limite inferiore della distanza sarà circa 1. Nel caso limite in cui tutte le componenti differiscano di 1, allora il limite superiore della distanza sarà $\sqrt{d}$.  La maggior parte dei punti avrà una distanza vicina alla media tra i due limiti. Se non vi punti vicini risulta complesso il raggruppamento in cluster. 
 
 
 
-### 4.1 Fattori chiave per gli algoritmi di clustering 
+### 4.2 Fattori chiave per gli algoritmi di clustering 
 
 In generale, non esiste un algoritmo di clustering migliore degli altri. La bontà di un algoritmo è legata a diversi fattori, non tutti necessariamente indispensabili per l'applicazione in esame: 
 
@@ -360,9 +357,9 @@ Definiremo $\mu_j$ il centroide del cluster $S_j$ l'elemento medio:
 $$
 \mu_j = \frac{1}{|S_j|} \times \sum_{x \in S_J} x
 $$
-Il vincolo secondo il quale i cluster debbano essere compatti è misurato attraverso una funzione costo $J(S)$ che, preso in input un determinato partizionamento $S$, calcola la somma della varianza non normalizzata per ogni cluster $S_i \in S$: 
+Il vincolo secondo il quale i cluster debbano essere compatti è misurato attraverso una funzione costo $J(S)$ che, preso in input un determinato partizionamento $S$, calcola la somma della varianza *non normalizzata* per ogni cluster $S_i \in S$: 
 $$
-J(S) = \sum_{j=1}^k \sum_{x \in S_j} ||x - \mu_j||^2 
+J(S) = \sum_{j=1}^k \sum_{x \in S_j} ||x - \mu_j||^2_2
 $$
 Il problema dell'algoritmo k-means sta nel trovare la partizione ottimale $\hat{S}$ che minimizzi la funzione $J(S)$. 
 
@@ -406,7 +403,7 @@ Per la scelta iniziale dei *k* punti si potrebbe effettuare il clustering su un 
 
 Un approccio alternativo consiste nel selezionare un punto randomicamente dall'insieme e inserirlo in un insieme $S$. Dopodichè aggiungere ad S il punto $P$ che massimizzi la distanza minima di $P$ dai punti in $S$: 
 $$
-P = arg \space \max_{P \notin S} \min_{x \in S} D(P, x)
+P = \text{arg} \max_{P \notin S} \left[ \min_{x \in S} D(P, x) \right]
 $$
 
 Ed iterare il processo sinché $|S| < k$. 
@@ -492,7 +489,7 @@ Diamo un paio di definizioni preliminari:
 Un **cluster** in DBscan è definito come un insieme *massimale* di *punti connessi per densità*. Formalmente, se D è l'insieme di tutti i punti da clusterizzare, un cluster C, rispetto a $\epsilon$ e $MinPts$, è un sottoinsieme non vuoto di punti di D tale che: 
 
 * $\forall P,Q \in D$ se $P \in C$ e $Q$ è raggiungibile per densità da P rispetto a $\epsilon$ e $MinPts$, allora $Q \in C$ (**Massimalità**). 
-* $\forall P,Q \in D$, P è connesso per densità a Q (**Connettività**). 
+* $\forall P,Q \in C$, P è connesso per densità a Q (**Connettività**). 
 
 <img src="./_media/2._Clustering__11.png" alt="image-20201023171442934" style="zoom:50%;" />
 
@@ -553,13 +550,13 @@ Il coefficiente di Silhouette è una metrica utile per la validazione del cluste
 
 ### 8.1 Calcolo del coefficiente
 
-Per ogni osservazione viene calcolata la distanza media tra tutti i punti appartenenti allo stesso cluster. Dopodiché si calcola la distanza media tra il punto e tutti gli altri cluster e si seleziona il cluster con la distanza media più piccola, chiamata . Il coefficiente di Silhouette è dato dalla seguente formula:
+Per ogni osservazione $i$ viene calcolata la distanza media $D_i$ tra tutti i punti appartenenti allo stesso cluster. Dopodiché si calcola la distanza media tra il punto $i$ e tutti gli altri cluster e si seleziona il cluster con la distanza media più piccola, chiamata $C_i$. Il coefficiente di Silhouette è dato dalla seguente formula:
 $$
 S_i = \frac {C_i - D_i} {\max(C_i, D_i)}
 $$
 Analizziamo i casi:
 
-* $S_i > 0$ indica che l'osservazione è ben clusterizzata. Di fatto il cluster $X$ è più lontanor ispetto al cluster di appartenenza. Più il valore è vicino ad 1, meglio i dati sono clusterizzati. Si considerano discretamente ottimali valori al di sopra di 0.5.
+* $S_i > 0$ indica che l'osservazione è ben clusterizzata. Di fatto il cluster $X$ è più lontano rispetto al cluster di appartenenza. Più il valore è vicino ad 1, meglio i dati sono clusterizzati. Si considerano discretamente ottimali valori al di sopra di 0.5.
 * $S_i < 0$ indica che l'osservazione è stata posizionata in un cluster sbagliato, di fatto il
   cluster $X$ è mediamente più vicino rispetto al cluster di appartenenza.
 * $S_i = 0$ indica che l'osservazione sta a metà tra $X$ ed il cluster di appartenenza, per cui
