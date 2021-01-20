@@ -108,13 +108,13 @@ i_j =
 0 \text{ altrimenti}
 \end{cases}
 $$
-Si costruisce il profilo $U$ dell'utente $x$, ovvero il vettore di $k$ valori $Pr(U) = (u_1, ..., u_k)$, dove il generico elemento $u_j$ rappresenta il grado medio di preferenza dell'utente $x$ per gli item recensiti che possiedono la proprietà $f_j$. Sia $s^*$ un item non ancora recensito da $x$ e di cui si vuole predire la preferenza. Si genera il profilo $I^*$ dell'item e si calcola la similarità tra i profili $U$ ed $I^*$. Se la similarità è alta, allora si consiglia ad $x$ l'item $s_i^*$. 
+Si costruisce il profilo $U$ dell'utente $x$, ovvero il vettore di $k$ valori $Pr(U) = (u_1, ..., u_k)$, dove il generico elemento $u_j$ rappresenta il grado medio di preferenza dell'utente $x$ per gli item recensiti che possiedono la proprietà $f_j$. Sia $s^*$ un item non ancora recensito da $x$ e di cui si vuole predire la preferenza. Si genera il profilo $I^*$ dell'item e si calcola la similarità tra i profili $U$ ed $I^*$. Se la similarità è alta, allora si consiglia ad $x$ l'item $s^*$. 
 
 
 
 ### 2.2 Profilo di un item 
 
-Il profilo di un item descrive quali proprietà contiene un item. Le proprietà rappresentano categorie, tag o parole chiave che è possibile associare ad un item. Se gli item fossero dei film, gli attributi potrebbero essere i generi, il regista, l'anno di uscita o e gli attori. Nel caso dei testi è possibile calcolare lo score TF-IDF delle parole e utilizzare le $n$ parole con score più alto come attributi dei documenti. Nelle immagini è possibile utilizzare dei tag che ne descrivano il contenuto, estraibili automaticamente con algoritmi di machine learning. 
+Il profilo di un item descrive quali proprietà contiene un item. Le proprietà rappresentano categorie, tag o parole chiave che è possibile associare ad un item. Se gli item fossero dei film, gli attributi potrebbero essere i generi, il regista, l'anno di uscita e/o gli attori. Nel caso dei testi è possibile calcolare lo score TF-IDF delle parole e utilizzare le $n$ parole con score più alto come attributi dei documenti. Nelle immagini è possibile utilizzare dei tag che ne descrivano il contenuto, estraibili automaticamente con algoritmi di machine learning. 
 
 Come descritto precedentemente, se la feature è presente nell'item, allora viene contrassegnata con $1$, altrimenti con $0$. Una volta fissati gli attributi è possibile rappresentare un item come un vettore. Per fissare ciò possiamo definire una funzione di rappresentazione $f$ che trasformi gli item in profili (vettori): 
 $$
@@ -132,7 +132,7 @@ Partendo dalle valutazioni già effettuate dall'utente su altri item, occorre ag
 
 #### 2.3.1 Caso binario
 
-Poniamoci nel caso ***binario*** in cui l'elemento della matrice è asserito con 1 se è stato valutato positivamente. Supponiamo che vi siano $n$ item e che gli attributi discriminanti siano $k$. Possiamo computare il profilo dell'utente $x_i$ attravers la media come segue: 
+Poniamoci nel caso ***binario*** in cui l'elemento della matrice è asserito con 1 se è stato valutato positivamente. Supponiamo che vi siano $n$ item e che gli attributi discriminanti siano $k$. Possiamo computare il profilo dell'utente $x_i$ attraverso la media come segue: 
 $$
 \text{profile}(x_i) = \frac 1 {\sum_{j=1}^n M_{i,j}} \sum_{j=1}^n M_{i,j} \times I_j
 $$
@@ -148,7 +148,7 @@ $$
 
 #### 2.3.2 Caso reale
 
-Quando la matrice di utilità non è binaria, ha senso normalizzare gli elementi della matrice di utilità per il loro valore medio. In questo modo, delle valutazioni al di sotto della media avranno un punteggio negativo, mentre valutazioni sopra la media avranno un punteggio positivo. Questo metodo si adatta inoltre in base agli utenti: utenti più critici avranno medie più basse e rating bassi ma sopra la media avranno comunque un punteggio positivo (simmetricamente per utenti più gentili).
+Quando la matrice di utilità non è binaria, ha senso normalizzare gli elementi della matrice di utilità per il loro valore medio. In questo modo, le valutazioni al di sotto della media avranno un punteggio negativo, mentre valutazioni sopra la media avranno un punteggio positivo. Questo metodo si adatta inoltre in base agli utenti: utenti più critici avranno medie più basse e rating bassi ma sopra la media avranno comunque un punteggio positivo (simmetricamente per utenti più gentili).
 
 Definiamo preventivamente la media delle valutazioni dell'utente $x_i$ supponendo che gli item non ancora valutati abbiano valore 0 nella matrice di utilità: 
 $$
@@ -208,7 +208,7 @@ Esempio: ipotizziamo di avere la seguente matrice sparsa di utilità. Ipotizziam
 
 <div style="page-break-after: always;"></div>
 
-Normalzziamo i profili degli utenti 2, 3, 4 e 5 sottraendo la media degli item valutati a tutte le valutazioni e poniamo a 0 (valutazione neutra) tutti gli item non valutati. 
+Normalizziamo i profili degli utenti 2, 3, 4 e 5 sottraendo la media degli item valutati a tutte le valutazioni e poniamo a 0 (valutazione neutra) tutti gli item non valutati. 
 
 <img src="./_media/10._Sistemi_di_raccomandazione__5.png" alt="image-20201226155003367" style="margin-top:20px; margin-bottom:20px" />
 
@@ -220,11 +220,11 @@ $$
 
 #### 3.1.3 Similarità nel caso binario
 
-Supponiamo che la matrice $M$ di utilità sia binaria e che ogni elemento indichi se all'utente piace o meno un determinato item. Nel caso binario è possibile rappresentare il profilo dell'utente come un insieme di item piaciuti. Data la notazione insiemistica, è possibile misurare la similarità tra utenti attraverso la distanza di Jaccard: 
+Supponiamo che la matrice $M$ di utilità sia binaria e che ogni elemento indichi se all'utente piace o meno un determinato item. Nel caso binario è possibile rappresentare il profilo dell'utente come un insieme di item piaciuti. Data la notazione insiemistica, è possibile misurare la similarità tra utenti attraverso la similarità di Jaccard (complementare della distanza di Jaccard): 
 $$
 J(x_i, x_j) = \frac {|x_i \cap x_j|} {|x_i \cup x_j|}
 $$
-Tale distanza misura l'intersezione dei due insiemi, ovvero gli item che piacciono ad ambo gli utenti, rispetto all'unione dei due insiemi, ovvero la totalità di item valutati da entrambi gli utenti (fattore di normalizzazione). Tale misura è compresa tra 0 ed 1, dove la massima similarità è 1 ed indica due utenti a cui piacciono esattamente gli stessi item.  
+Tale metrica misura l'intersezione dei due insiemi, ovvero gli item che piacciono ad ambo gli utenti, rispetto all'unione dei due insiemi, ovvero la totalità di item valutati da entrambi gli utenti (fattore di normalizzazione). È compresa tra 0 ed 1, dove la massima similarità è 1 ed indica due utenti a cui piacciono esattamente gli stessi item.  
 
 
 
@@ -280,7 +280,7 @@ L'idea è quella di utilizzare delle tecniche di *decomposizione* o *fattorizzaz
 * Come prodotto di due matrici di dimensione, rispettivamente, $m \times r \text{ ed } r \times n$. 
 * Come prodotto di tre matrici di dimensione, rispettivamente, $m \times r \text{, } r \times r, r \times n$
 
-Alcuni scomposizioni d'esempio sono la decomposizione LU, la decomposizione UV, la singular value decomposition (SVD), etc. 
+Alcune scomposizioni d'esempio sono la decomposizione LU, la decomposizione UV, la singular value decomposition (SVD), etc. 
 
 
 

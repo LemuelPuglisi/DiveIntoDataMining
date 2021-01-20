@@ -185,7 +185,7 @@ Il numero di nodi in $T_1(s)$ a cui $n$ è adiacente è minore o uguale al numer
 
 **Regola del look-ahead a due livelli**
 
-Il numero di nodi in $V'_1(s)$ connessi a $n$ è minore o uguale di nodi in $V'_2(s)$ connessi ad $m$. 
+Il numero di nodi in $V'_1(s)$ connessi a $n$ è minore o uguale al numero di nodi in $V'_2(s)$ connessi ad $m$. 
 
 
 
@@ -197,7 +197,7 @@ Il numero di nodi in $V'_1(s)$ connessi a $n$ è minore o uguale di nodi in $V'_
 
 #### 2.4.4 Complessità dell'algoritmo
 
-Supponiamo che ognuno dei due grafi abbia $n$ nodi. In media, nel caso pessimo ogni grafo ha $\Theta(n)$ adiacenti, quindi il costo dell'esplorazione di un singolo stato è $\Theta(N)$. Nel caso migliore, ad ogni passo il primo nodo selezionato soddisfa sempre le regole di fattibilità, per cui si ha una complessità $\Theta(n^2)$. Nel caso pessimo bisogna esplorare l'intero albero di ricerca, per cui si ha una complessità temporale $\Theta(n!n)$. 
+Supponiamo che ambo i grafi abbiano $n$ nodi. Nel caso pessimo ogni nodo ha $n$ adiacenti (grafo regolare). Il primo passo di esplorazione ha $n$ scelte. Nel caso migliore ad ogni passo il primo nodo soddisfa le regole, per cui la complessità finale è $\Theta(n^2)$. Nel caso pessimo, per ogni scelta bisogna esplorare tutte le possibili permutazioni del grafo target, quindi la complessità sarà $\Theta(n!n)$. 
 
 Se consideriamo le informazioni relative allo stato, l'algoritmo memorizza per ogni nodo una quantità costante di informazioni, ovvero il mapping e l'appartenenza ai vari insiemi. Al più $N$ stati (e le informazioni associate) risiederanno simultaneamente in memoria in un certo momento della computazione. 
 
@@ -207,7 +207,7 @@ Se consideriamo le informazioni relative allo stato, l'algoritmo memorizza per o
 
 Una versione successiva dell'algoritmo, chiamata VF2, ottimizza lo spazio utilizzato sino ad ottenere una complessità spaziale pari a $\Theta(n)$. L'idea è quella di usare strutture dati globali, condivise tra i vari stati, ed evitare la memorizzazione di diverse copie di vettori delle informazioni sui nodi per ciascuno stato.
 
-Vengono introdotte le strutture $core_1$ e $core_2$ dove $core_1(n)=m$ se e solo se $n$ ed $m$ sono mappati assieme. Dei nuovi insiemi $in_1, out_1, in_2, out_2$ descrivono l'appartenenza dei nodi agli insiemi terminali. Il valore memorizzato corrisponde alla prodondità nell'albero di ricerca dello stato in cui il nodo è entrato nel corrispondente insieme. 
+Introduciamo le strutture $\text{core}_1$ e $\text{core}_2$ rispettivamente di lunghezza pari al numeri di nodi dei rispettivi grafi. Le strutture sono tali che $\text{core}_1(n) = m \Longleftrightarrow (m, n) \in M$, simmetricamente per $\text{core}_2$. Si introducono dei nuovi insiemi $in_1, out_1, in_2, out_2$ che indicano il tempo in cui un nodo entra a far parte di $M$ o di $T$ rispettivamente. Tali strutture servono a gestire meglio le strutture dati globali. 
 
 In questo modo si tiene traccia contemporaneamente dell'appartenenza del nodo agli insiemi terminali e dello stato corrispondente della computazione. Quando si fa backtracking, si ripristina il precedente valore di questi vettori. 
 
