@@ -1,5 +1,7 @@
 # Dive Into Data Mining
 
+Scarica l'ultima versione degli appunti in formato pdf [cliccando qui](https://github.com/LemuelPuglisi/DiveIntoDataMining/releases/latest/download/dive_into_data_mining_25_01_2021.pdf).
+
 Dive into data mining è una raccolta di appunti estratti dai corsi:
 
 * Introduzione al data mining 
