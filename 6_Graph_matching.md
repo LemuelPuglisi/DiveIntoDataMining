@@ -237,7 +237,7 @@ Per costruire tale sequenza si procede ad iterazioni:
 * Al tempo 1 viene inserito in $U_1$ il nodo con il grado massimo. 
 * Al generico tempo $i$ viene inserito il nodo $u_i$ con il più alto numero di vicini in $U_{i-1}$.  
 
-Quindi nodi con alto grado e che hanno un elevato numero di connessioni con nodi *già presenti* nell'ordinamento vengono inseriti prima nella sequenza ordinata. In generale, ad ogni iterazioni si calcola un punteggio $S$ per ogni nodo. 
+Quindi nodi con alto grado e che hanno un elevato numero di connessioni con nodi *già presenti* nell'ordinamento vengono inseriti prima nella sequenza ordinata. In generale, ad ogni iterazione si calcola un punteggio $S$ per ogni nodo. 
 
 Sia $O^{m-1} = (u_1, ..., u_{m-1})$ la sequenza ordinata parziale. Il punteggio di un nodo candidato $v$ è definito sulla base di 3 insiemi: 
 

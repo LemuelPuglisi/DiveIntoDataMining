@@ -145,7 +145,7 @@ Sia $A$ la **distribuzione di probabilità** iniziale. Ogni qual volta effettuia
 
 Sia $M = (Q,I,A)$ una catena di Markov del primo ordine, irriducibile e aperiodica con *k* stati. Si dimostra che: 
 $$
-\lim_{x\to\infty} P(\pi_n = j | \pi_i = i) = \lim_{x\to\infty} A_{i,j}^n = \sigma
+\lim_{n\to\infty} P(\pi_n = j | \pi_i = i) = \lim_{n\to\infty} A_{i,j}^n = \sigma
 $$
 Tale proprietà vale per tutti gli $j$, dunque si ottiene un vettore di valori $\bar{\sigma} = (\sigma_1, ...,\sigma_k)$. Se $\bar{\sigma}$ contiene valori non nulli, allora $\bar{\sigma}$ è detta **distribuzione stazionaria**. Se tutti i valori di $\bar{\sigma}$ sono non nulli allora $\bar{\sigma}$ è l'unica distribuzione stazionaria. 
 
@@ -224,7 +224,7 @@ P(\pi_1) \times
 \prod_{i=1}^{n-1} P(\pi_{i+1}|\pi_i) \times P(x_1, ..., x_n | \pi_1, ..., \pi_n) = P(\pi_1) \times 
 \prod_{i=1}^{n-1} P(\pi_{i+1}|\pi_i) \times \prod_{i=1}^n P(x_i|\pi_i)
 $$
-Ma $P(\pi_{i+1}|\pi_i)$ corrisponde alla elemento $a_{\pi_i, \pi_{i+1}}$ della matrice di transizione e $P(x_i,\pi_i)$ corrisponde all'elemento $e_{\pi_i, x_i}$ della matrice di emissione, per cui riscriviamo l'espressione finale come segue: 
+Ma $P(\pi_{i+1}|\pi_i)$ corrisponde alla elemento $a_{\pi_i, \pi_{i+1}}$ della matrice di transizione e $P(x_i\mid\pi_i)$ corrisponde all'elemento $e_{\pi_i, x_i}$ della matrice di emissione, per cui riscriviamo l'espressione finale come segue: 
 $$
 P(x_1, ..., x_n, \pi_1, ..., \pi_n) = P(\pi_1) \times \prod_{i=1}^{n-1} a_{\pi_i, \pi_{i+1}} \times \prod_{i=1}^n e_{\pi_i, x_i}
 $$
@@ -293,7 +293,7 @@ for t = 1 in len(X):
     for j = 1 to k:
         sum = 0
         # calcolo la probabilità di passare
-        # dallo uno qualsiasi tra gli stati 
+        # da uno qualsiasi tra gli stati 
         # precedenti i a j 
         for i = 1 in k:
             sum = sum + f[t,i] * A[i,j]
@@ -333,7 +333,7 @@ $$
 
 #### 2.4.1 Algoritmo di Viterbi 
 
-L'algoritmo di Viterbi ha una struttura simile a quella dell'algoritmo forward. Tuttavia, anziché sommare il contributi provenienti da ogni singolo stato visitato al passo precedente, seleziona di volta in volta il contributo migliore, ovvero quello con il valore massimo. Ciò equivale nel lattice a tracciare un cammino di stati di lunghezza *n* che massimizzi la probabilità di ottenere la sequenza $X$: 
+L'algoritmo di Viterbi ha una struttura simile a quella dell'algoritmo forward. Tuttavia, anziché sommare i contributi provenienti da ogni singolo stato visitato al passo precedente, seleziona di volta in volta il contributo migliore, ovvero quello con il valore massimo. Ciò equivale nel lattice a tracciare un cammino di stati di lunghezza *n* che massimizzi la probabilità di ottenere la sequenza $X$: 
 
 <img src="./_media/9._Catene_di_Markov,_HMM__8.png" alt="image-20201123111918963" style="zoom:80%;" />
 
@@ -421,7 +421,7 @@ Mediante la struttura dati $phi$ si tiene traccia, ad ogni istante di tempo $t$,
 
 ### 2.5 Posterior Decoding 
 
-Il **posterior decoding** è un particolare problema di decoding. Avendo osservato una intera sequenza di simboli $X$, si vuole calcolare (a posteriori) lo stato $s$ più probabile all'istante $t$, ovvero lo stato $s$ tale che; 
+Il **posterior decoding** è un particolare problema di decoding. Avendo osservato una intera sequenza di simboli $X$, si vuole calcolare (a posteriori) lo stato $s$ più probabile all'istante $t$, ovvero lo stato $s$ tale che
 $$
 P(\pi_t = s|X) = arg \max_{i =1,...,k} P(\pi_t = i | X)
 $$
@@ -429,7 +429,7 @@ Ma osserviamo che:
 $$
 P(\pi_t = i| X) = \frac{P(\pi_t = i, X)}{P(X)}
 $$
-Il problema di massimizzazione è analogo se anziché il rapporto consideriamo solo la probabilità congiunta al numeratore, che tral'altro possiamo esplicitare:  
+Il problema di massimizzazione è analogo se anziché il rapporto consideriamo solo la probabilità congiunta al numeratore, che tra l'altro possiamo esplicitare:  
 $$
 P(\pi_t = i, X) = P(x_1, ..., x_n, \pi_1, ..., \pi_t=i, ..., \pi_n)
 $$
@@ -459,7 +459,7 @@ Possiamo scomporre l'espressione:
 $$
 \sum_{j=1}^k P(x_{t+1}, ..., x_n, \pi_{t+1} = j, ..., \pi_n|\pi_t=i)
 $$
-Essendo che ad ogni iterazione della sommatoria lo stato $\pi_{t+1}$ è fissato a $j$, possiamo rimuovere dalla probabilità l'emissione dell'elemento $x_{t+1}$ (che sarà banalmente emessa dallo stato $j$) e la transizione dallo stato $i$ allo stato $j$ e moltiplicarli singolarmente: 
+Essendo che ad ogni iterazione della sommatoria lo stato $\pi_{t+1}$ è fissato a $j$, possiamo rimuovere dalla probabilità l'emissione dell'elemento $x_{t+1}$ (che sarà banalmente emesso dallo stato $j$) e la transizione dallo stato $i$ allo stato $j$ e moltiplicarli singolarmente: 
 $$
 \sum_{j=1}^k P(\pi_{t+2}, ..., \pi_n, x_{t+2}, ..., x_n|\pi_t=i) \times a_{i,j} \times e_{j,x_{t+1}}
 $$
@@ -504,7 +504,7 @@ def backward_probability(X, Q, Sigma):
                 symbol_emitted = X[t+1]
                 probabilty_to_add = B[t+1] * A[i,j] * E[j, symbol_emitted]
                 probability = probability + probability_to_add
-		# aggiorniamo il valore della backword probability
+		# aggiorniamo il valore della backward probability
          # per lo stato i-esimo esaminato al tempo t
 		B[t,i] = probability
 
@@ -539,7 +539,7 @@ a_{s,t} = \frac{A_{s,t}}{\sum_{i=1}^k A_{s,i}}
 $$
 
 $$
-e_{s,b} = \frac{E_{s,b}}{\sum_{j=1}^m A_{s,j}}
+e_{s,b} = \frac{E_{s,b}}{\sum_{j=1}^m E_{s,j}}
 $$
 
 Tuttavia, pochi dati in input possono essere insufficienti per una stima corretta. Quindi è possibile ricadere nel problema dell'**overfitting**. 
@@ -572,7 +572,7 @@ Data la sequenza di simboli $X$, tale espressione esprime la probabilità a post
 
 ![image-20201123172009711](./_media/9._Catene_di_Markov,_HMM__9.png)
 
-Possiamo calcolare la probabilità che si arrivi allo stato $\pi_t = i$ attraverso un percorso $\pi_1, ..., \pi_{t-1}$ qualsiasi attraverso la **probabilità forward**, mentre calcoliamo la probabilità di arrivare al tempo $t+1$ tale che $\pi_{t+1} = j$ provenendo, al tempo $n$, da uno qualunque dei $k$ stati attraverso la **probabilità backward**. È necessario considerare anche la transizione centra da $i$ a $j$ e l'emissione del simbolo $x_{t+1}$. 
+Possiamo calcolare la probabilità che si arrivi allo stato $\pi_t = i$ attraverso un percorso $\pi_1, ..., \pi_{t-1}$ qualsiasi attraverso la **probabilità forward**, mentre calcoliamo la probabilità di arrivare al tempo $t+1$ tale che $\pi_{t+1} = j$ provenendo, al tempo $n$, da uno qualunque dei $k$ stati attraverso la **probabilità backward**. È necessario considerare anche la transizione da $i$ a $j$ e l'emissione del simbolo $x_{t+1}$. 
 $$
 f_t(i) \times a_{i,j} \times e_{j, x_{t+1}} \times b_{t+1}(j)
 $$

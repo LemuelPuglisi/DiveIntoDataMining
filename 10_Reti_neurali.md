@@ -60,7 +60,7 @@ Una rete neurale in cui ogni nodo di un certo layer riceve tutti gli output del 
 
 ### 1.3 Explanable AI
 
-La rete neurale si presenta come un modello *black-box*: un osservatore esterno vede l'output prodotto dal modello a partire da un input, ma il modello non è in grado di *giustificare* il risultato ottenuto, ovvero non è in grado di spiegare il procedimento logico per cui si arriva a produrre quel risultato. Il termine *Explnable AI* indica una serie di tecniche a supporto di modelli di intelligenza artificiale per far sì che un risultato prodotto da tali modelli possa essere compreso da un essere umano. Tali tecniche sono molto importanti in ambito medico, nella guida autonoma, nella computer vision, etc. 
+La rete neurale si presenta come un modello *black-box*: un osservatore esterno vede l'output prodotto dal modello a partire da un input, ma il modello non è in grado di *giustificare* il risultato ottenuto, ovvero non è in grado di spiegare il procedimento logico per cui si arriva a produrre quel risultato. Il termine *Explanable AI* indica una serie di tecniche a supporto di modelli di intelligenza artificiale per far sì che un risultato prodotto da tali modelli possa essere compreso da un essere umano. Tali tecniche sono molto importanti in ambito medico, nella guida autonoma, nella computer vision, etc. 
 
 <div style="page-break-after: always;"></div>
 
@@ -73,7 +73,7 @@ La costruzione di una rete neurale è fondamentale per ottenere un modello di ma
 * Quanti hidden layer definire?
 * Quanti nodi deve contenere ciascun layer?
 * Come connettere i nodi di layer consecutivi?
-* Quale funzione di attivazione scegliere per ogni nodo di ogni layer?
+* Quale funzione di attivazione scegliere per ogni layer?
 
 Una volta definita la struttura, il modello deve essere addestrato su un training set al fine di trovare i valori ottimali dei pesi degli input ricevuti da ogni nodo della rete neurale in ogni layer. Per fare ciò occorre definire una funzione di costo *globale* $F$, detta ***funzione loss***, e trovare i pesi che la minimizzino. Le due ulteriori domande da porsi sono: 
 
@@ -182,7 +182,7 @@ A differenza delle funzioni sigmoidee, la funzione softmax non opera sulla singo
 $$
 \mu(x_i) = \frac {exp(x_i)} {\sum_{j=1}^n exp(x_j)}
 $$
-La funzione ha valori in $[0, 1]$ come la funzione logistica. La somma dei valori calcolati su ogni componente del vettore è 1, dunque $\mu(\bar x)$ è una distribuzione di probabilità. Grazie all'esponenziale, le componenti del vettore con valori più alti ricevono valori molto più alti rispetto alle altre. In particolare se c'è una componente con un valore significativamente più alto rispetto a tutti gli altri, a questo componenti corrisponderà un valore vicino ad 1, mentre alle restanti un valore prossimo allo 0. La softmax ha problemi di saturazione, che possono essere aggirati utilizzando come funzione costo l'*entropia incrociata*. 
+La funzione ha valori in $[0, 1]$ come la funzione logistica. La somma dei valori calcolati su ogni componente del vettore è 1, dunque $\mu(\bar x)$ è una distribuzione di probabilità. Grazie all'esponenziale, le componenti del vettore con valori più alti ricevono valori molto più alti rispetto alle altre. In particolare se c'è una componente con un valore significativamente più alto rispetto a tutti gli altri, a questa componente corrisponderà un valore vicino ad 1, mentre alle restanti un valore prossimo allo 0. La softmax ha problemi di saturazione, che possono essere aggirati utilizzando come funzione costo l'*entropia incrociata*. 
 
 Il denominatore della funzione softmax coinvolge una somma di esponenziazioni. Quando i valori $x_i$ variano in un range molto ampio, le loro esponenziazioni $exp(x_i)$ finiscono per variare in un range esponenzialmente più ampio, che coinvolge valori molto piccoli e molto grandi. Sommare valori molto piccoli e molto grandi può portare a problemi di accuratezza nel calcolo svolto da una macchina. 
 
@@ -221,7 +221,7 @@ x \text { if } x \ge 0 \\
 \alpha [\exp(x) - 1] \text { if } x < 0
 \end{cases}
 $$
-Dove $\alpha \ge 0$ p un *iper-parametro* tenuto fisso durante il learning dei pesi. Il processo di learning viene ripetuto con diversi valori di $\alpha$ per trovare il valore che permette di ottenere performance migliori. 
+Dove $\alpha \ge 0$ è un *iper-parametro* tenuto fisso durante il learning dei pesi. Il processo di learning viene ripetuto con diversi valori di $\alpha$ per trovare il valore che permette di ottenere performance migliori. 
 
 <div style="page-break-after: always;"></div>
 
@@ -245,7 +245,7 @@ $$
 e la ***Huber loss***: 
 $$
 L_{\delta}(\hat y, y) = \begin {cases}
-(\hat y - y)^2 \text { if } |\hat y_i - y_i| \le \delta \\
+(\hat y - y)^2 \text { if } |\hat y - y| \le \delta \\
 2 \delta \times (|\bar y - y| - \frac 1 2 \delta) \text{ otherwise}
 \end {cases}
 $$
@@ -271,7 +271,7 @@ La radice quadrata del MSE è definita ***Root Mean Square Error*** (RMSE). Nell
 
 
 
-#### 3.1.2 Regresson loss con vettori
+#### 3.1.2 Regression loss con vettori
 
 Nel caso in cui l'output è un vettore di valori $\bar {\hat y} = (\hat y_1 , ..., \hat y_n)$ anziché uno scalare, si sostituisce nel calcolo della squared loss, della Huber loss e del MSE la norma della differenza tra i vettori reale e predetto al posto della differenza tra i valori scalari. 
 $$
@@ -313,7 +313,7 @@ $$
 
 #### 3.2.3 Divergenza di Kullback-Leibler
 
-In generale sappiamo che $C(\bar p || \bar q) > H(\bar p)$ poiché $\bar q$ è sub-ottimale, mentre $\bar p$ è ottimale. La differenza tra $C(\bar p || \bar q)$ e $H(\bar p)$, chiamata Divergenza di *Kullback-Leiber* (*KL*), misura il numero medio di bit in più che occorrono per ogni simbolo: 
+In generale sappiamo che $C(\bar p || \bar q) > H(\bar p)$ poiché $\bar q$ è sub-ottimale, mentre $\bar p$ è ottimale. La differenza tra $C(\bar p || \bar q)$ e $H(\bar p)$, chiamata Divergenza di *Kullback-Leibler* (*KL*), misura il numero medio di bit in più che occorrono per ogni simbolo: 
 $$
 KL(\bar p || \bar q) = C(\bar p || \bar q) - H(\bar p) 
 = \sum_{i=1}^n p_i \log_2 \frac {p_i}{q_i}
@@ -392,7 +392,7 @@ Similmente, per ogni matrice $X$, abbiamo che $\nabla_{X} ||X||_F^{2} = 2X$.
 
 ### 4.2 Matrice jacobiana
 
-Sia $\bar{x} = (x_1, ..., x_n)$ un vettore di $n$ valori reali. Sia $f:\R^n \to \R^m$ ed $\bar y = f(\bar{x})$. La matrice jacobiana di $\bar{y}$ rispetto ad $\bar{x}$ è la matrice formata dalle derivate parziali prima di ciascuna componente di $\bar{y}$ rispetto a ciascuna componente di $\bar{x}$: 
+Sia $\bar{x} = (x_1, ..., x_n)$ un vettore di $n$ valori reali. Sia $f:\R^n \to \R^m$ ed $\bar y = f(\bar{x})$. La matrice jacobiana di $\bar{y}$ rispetto ad $\bar{x}$ è la matrice formata dalle derivate parziali prime di ciascuna componente di $\bar{y}$ rispetto a ciascuna componente di $\bar{x}$: 
 $$
 Jf(\bar{x}) = J(\bar{y}) = 
 	\begin{bmatrix} 
@@ -449,7 +449,7 @@ Il metodo *stochastic gradient descent* è una variante della discesa del gradie
 
 #### 4.3.5 Calcolo del gradiente 
 
-Una volta calcolata la funzione loss su un vettore di input, occorre calcolare il gradiente della funzione loss rispetto ai pesi della rete in quel determinato momento. Un algoritmo efficiente per il calcolo del gradiente è l'algoritmo di ***backpropagation***, che sfrutta il concetto di *grafo computazionale*. 
+Una volta calcolata la funzione loss su un vettore di output, occorre calcolare il gradiente della funzione loss rispetto ai pesi della rete in quel determinato momento. Un algoritmo efficiente per il calcolo del gradiente è l'algoritmo di ***backpropagation***, che sfrutta il concetto di *grafo computazionale*. 
 
 
 
@@ -483,7 +483,7 @@ Dove la norma di Frobenius (o norma matriciale) è semplicemente la norma $L_2$ 
 $$
 J = L + s
 $$
-Ci riferiremo a $J$ con il nome di *objective function*. o *funzione loss regolarizzata* 
+Ci riferiremo a $J$ con il nome di *objective function* o *funzione loss regolarizzata* 
 
 <div style="page-break-after: always;"></div>
 
@@ -507,7 +507,9 @@ $$
 $$
 Nel caso più generale di funzioni multivariate, supponiamo che la funzione differenziabile $y$ abbia $u_1, \dots, u_m$ variabili, e che ogni funzione differenziabile $u_i$ abbia $x_1, ..., x_n$ variabili. La regola della catena enuncia che per calcolare la derivata parziale di $y$ rispetto ad $x_i$ è sufficiente calcolare: 
 $$
-\frac{dy}{dx_i} = \frac{dy}{du_1}\frac{du_1}{dx_1} + \dots + \frac{dy}{du_n}\frac{du_m}{dx_1}
+\frac{dy}{dx_i} = \frac{dy}{du_1}\frac{du_1}{dx_1} +
+\frac{dy}{du_2}\frac{du_2}{dx_1} +
+\dots + \frac{dy}{du_m}\frac{du_m}{dx_1}
 $$
 per $i = 1, 2, \dots, n$. 
 
@@ -614,7 +616,7 @@ $$
 
 ### 4.9 Dropout
 
-Nei capitoli precedenti si è vista la tecnica di bootstrapping utilizzata nella classificazione. Analogamente, viene utilizzata una tecnica che prende il nome di *dropout* nelle reti neurali. Lo scopo è quello di creare un consenso sui valori ottimali dei pesi, considerando il risultato ottenuto da diverse sottoreti neurali. Ad ogni epoca si seleziona in maniera random una frazione dei nod della rete, chiamata ***dropout rate***, e si rimuovono. Sulla rete neurale ridotta si effettua una iterazione del metodo di discesa del gradiente. Dal momento in cui la rete neurale completa contiene più nodi rispetto a quella utilizzata durante il training, alla fine del processo di allenamento i pesi ottenuti vengono ri-scalati, ovvero moltiplicati per il dropout rate. 
+Nei capitoli precedenti si è vista la tecnica di bootstrapping utilizzata nella classificazione. Analogamente, viene utilizzata una tecnica che prende il nome di *dropout* nelle reti neurali. Lo scopo è quello di creare un consenso sui valori ottimali dei pesi, considerando il risultato ottenuto da diverse sottoreti neurali. Ad ogni epoca si seleziona in maniera random una frazione dei nodi della rete, chiamata ***dropout rate***, e si rimuovono. Sulla rete neurale ridotta si effettua una iterazione del metodo di discesa del gradiente. Dal momento in cui la rete neurale completa contiene più nodi rispetto a quella utilizzata durante il training, alla fine del processo di allenamento i pesi ottenuti vengono ri-scalati, ovvero moltiplicati per il dropout rate. 
 
 
 

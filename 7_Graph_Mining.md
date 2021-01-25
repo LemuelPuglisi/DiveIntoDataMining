@@ -14,7 +14,7 @@ Vediamo un esempio con soglia $\sigma = 3$:
 
 ![image-20201221092846424](./_media/8._Graph_Mining__1.png)
 
-Piuttosto che fare riferimento al *supporto*, che è un conteggio relativo, spesso si utilizza la *frequenza*, che è invece un conteggio relativo. La frequenza di un sottografo $S$ in un database $D$ è il rapporto tra il supporto ed il numero di grafi nel database. La soglia minima $\sigma$ in questo caso sarà espressa come una percentuale. Un sottografo è frequente se è presente in almeno $\sigma$% grafi del database. 
+Piuttosto che fare riferimento al *supporto*, che è un conteggio assoluto, spesso si utilizza la *frequenza*, che è invece un conteggio relativo. La frequenza di un sottografo $S$ in un database $D$ è il rapporto tra il supporto ed il numero di grafi nel database. La soglia minima $\sigma$ in questo caso sarà espressa come una percentuale. Un sottografo è frequente se è presente in almeno $\sigma$% grafi del database. 
 
 
 
@@ -61,7 +61,7 @@ Quando al generico passo $k$ si verifica che l'insieme di sottografi frequenti c
 
 L'approccio descritto in precedenza è basato su una strategia in ampiezza, ovvero BFS (Breadth-first Search): prima di generare i sottografi candidati con $k+1$ nodi, si calcolano tutti i sottografi frequenti con $k$ nodi.  
 
-Esiste anche un approccio alternativo che utilizza la strategia DFS (Depth-first search): si calcola il supporto di un sottografo candidato con $k-nodi$ e, se è frequente, si estende. Quindi si controlla il supporto del sottografo esteso e così via. L'approccio DFS richiede meno memoria, ma risulta meno efficace nel pruning. 
+Esiste anche un approccio alternativo che utilizza la strategia DFS (Depth-first search): si calcola il supporto di un sottografo candidato con $k- 1$ nodi e, se è frequente, si estende. Quindi si controlla il supporto del sottografo esteso e così via. L'approccio DFS richiede meno memoria, ma risulta meno efficace nel pruning. 
 
 <img src="./_media/8._Graph_Mining__3.png" alt="image-20201221110044089" style="margin:20px" />
 
