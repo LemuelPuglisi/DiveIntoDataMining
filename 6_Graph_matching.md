@@ -52,7 +52,7 @@ Per quanto concerne il graph matching, alcuni dei più famosi algoritmi sviluppa
 
 ## 2. Algoritmi di subgraph matching
 
-Tutti gli algoritmi di subgraph matching hanno una procedura simile: esplorano un particolare albero di ricerca. Ipotizziamo che $G_a$ sia il nodo query e $G_b$ sia il nodo target: 
+Tutti gli algoritmi di subgraph matching hanno una procedura simile: esplorano un particolare albero di ricerca. Ipotizziamo che $G_a$ sia il grafo query e $G_b$ sia il grafo target: 
 
 ![image-20201216154004172](./_media/7._Graph_matching__5.png)
 

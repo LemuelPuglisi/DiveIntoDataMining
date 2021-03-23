@@ -609,7 +609,7 @@ I passi dell'algoritmo sono i seguenti:
   * Calcola la probabilità $P(X|Z)$ di osservare la sequenza di simboli $X$ con i parametri $Z$
   * Itera nuovamente sino a che $P(X|Z)$ varia poco rispetto al valore precedente
 
-La probabilità $P(X|Z)$ è calcolabile banalmente poiché ricade nel problema dell'evalutaion già affrontato.
+La probabilità $P(X|Z)$ è calcolabile banalmente poiché ricade nel problema dell'evaluation già affrontato.
 
 L'algoritmo non garantisce di trovare i migliori parametri e può convergere a minimi locali in base alle condizioni iniziali. Sia *b* il numero di iterazioni, la complessità è $O(bk^2n)$. 
 
