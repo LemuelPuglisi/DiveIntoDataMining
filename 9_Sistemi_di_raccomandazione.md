@@ -178,6 +178,15 @@ A differenza della similarità basata sulla distanza euclidea, la similarità de
 
 I sistemi Content-Based non richiedono confronti con altri utenti, sono facili da interpretare e promuovono gli item non popolari. Tuttavia, individuare le proprietà adatte per costruire i profili degli item può essere difficile e risulta impossibile eseguire delle previsioni su nuovi utenti che non hanno ancora valutato alcun item. Allo stesso modo, risulta impossibile eseguire predizioni su item che contengono proprietà non valutate dall'utente. Un altro difetto marcato è la *overspecialization*: si tende a consigliare solo oggetti simili tra loro, senza proporre all'utente nuove scelte. 
 
+
+
+### 2.6 Baseline 
+
+Un famoso approccio al problema della raccomandazione di item per un nuovo utente che non ha effettuato nessuna valutazione, consiste nel calcolare la *baseline* $b$. La baseline rappresenta la media tra il grado medio di preferenza di tutti gli utenti, così da poter raccomandare al nuovo utente degli item che piacciono globalmente. Supponendo vi siano $n$ utenti, allora definiamo $b$
+$$
+b = \frac 1 n \sum_{i=1}^n \text{profile}(x_i)
+$$
+
 <div style="page-break-after: always;"></div>
 
 ## 3. Sistemi Collaborative Filtering 
@@ -198,9 +207,11 @@ Ipotizziamo di voler predire la valutazione dell'utente $x$ rispetto ad un item 
 
 #### 3.1.2 Similarità tra utenti
 
-Il *profilo dell'utente* in questo caso è rappresentato dalla corrispondente riga nella matrice $M$ di utilità, dove alle entry vuote viene associato il valore 0. Per calcolare la similarità tra utenti è possibile utilizzare nuovamente la similarità del coseno. 
+Il *profilo dell'utente* in questo caso è rappresentato dalla corrispondente riga nella matrice $M$ di utilità, dove alle entry vuote viene associato il valore 0. Per calcolare la similarità tra utenti è possibile utilizzare nuovamente la *similarità del coseno* o, in alternativa, il *coefficiente di Pearson*. 
 
-Applicare la similarità del coseno direttamente sulle righe della matrice introdurrebbe un bias, dal momento in cui il valore 0 non corrisponde ad una valutazione negativa, bensì neutra. Occorre quindi ***normalizzare***, ovvero centrare i valori di rating rispetto al valore 0, in modo che rating bassi risultino negativi e rating alti positivi. Ciò può essere ottenuto sottraendo a ciascun valore di rating conosciuto la media dei rating assegnati dall'utente ai vari item.   
+> Siano $v$ e $u$ due vettori, il coefficiente di Pearson $\rho(v,u)$ corrisponde esattamente alla similarità del coseno calcolata sui vettori ridotti del loro valore medio $\cos(v-\bar{v}, u-\bar{u})$. 
+
+Applicare la similarità del coseno direttamente sulle righe della matrice introdurrebbe un bias, dal momento in cui il valore 0 non corrisponde ad una valutazione negativa, bensì neutra. Occorre quindi ***normalizzare***, ovvero centrare i valori di rating rispetto al valore 0, in modo che rating bassi risultino negativi e rating alti positivi. Ciò può essere ottenuto sottraendo il rating medio dell'utente a tutte le valutazioni che ha effettuato.
 
 Esempio: ipotizziamo di avere la seguente matrice sparsa di utilità. Ipotizziamo di voler stimare la valutazione dell'utente 4 rispetto all'item 4. Consideriamo gli utenti che hanno già valutato l'item 4, che risultano essere gli utenti 2,3 e 5. 
 
@@ -230,13 +241,35 @@ Tale metrica misura l'intersezione dei due insiemi, ovvero gli item che piaccion
 
 ### 3.2 Item-Item collaborative filtering 
 
-Si consideri l'utente $x_i$ ed un item $s_j$ non valutato da $x_i$. Si consideri come profilo $I_j$ dell'item $s_j$ la colonna $j$-esima della matrice di utilità, normalizzata sottraendo la media delle valutazioni degli utenti. Si trovino gli $N$ item più simili ad $s_j$ e valutati dall'utente $x_i$, utilizzando la distanza del coseno. A questo punto si stimi la valutazione dell'utente $x_i$ rispetto all'item $s_j$ attraverso la media dei rating dati dall'utente $x_i$ agli $N$ item più simili ad $s_j$, pesata con lo score di similarità. Il risultato sarà la valutazione predetta. 
+Si consideri l'utente $x_i$ ed un item $s_j$ non valutato da $x_i$. Si consideri come profilo $I_j$ dell'item $s_j$ la colonna $j$-esima della matrice di utilità, normalizzata sottraendo la media delle valutazioni degli utenti. Si trovino gli $N$ item più simili ad $s_j$ e valutati dall'utente $x_i$, utilizzando la distanza del coseno (o il coefficiente di Pearson). A questo punto si stimi la valutazione dell'utente $x_i$ rispetto all'item $s_j$ attraverso la media dei rating dati dall'utente $x_i$ agli $N$ item più simili ad $s_j$, pesata con lo score di similarità. Il risultato sarà la valutazione predetta. 
 
 Tale schema differisce dai sistemi content-based in quanto il profilo dell'item non è costruito attraverso gli attributi dell'item stesso, bensì attraverso le valutazioni degli utenti nella matrice di utilità. Nella pratica, i sistemi Item-Item funzionano meglio poiché gli utenti tendono ad avere preferenze diverse. 
 
 
 
-### 3.3 Confronto tra collaborative filters 
+### 3.3 Approccio comune
+
+Supponiamo di voler predire la valutazione $r_{xi}$ dell'utente $x$ rispetto all'item $i$. Indichiamo per brevità con $s_{ij}$ la similarità tra gli item $i$ e $j$. Partiamo da una stima baseline $b_{xi}$ per $r_{xi}$ calcolata come segue
+$$
+b_{xi} = \mu + b_x + b_i
+$$
+Dove $\mu$ è la media generale di tutti i film, $b_x$ rappresenta la deviazione delle valutazioni dell'utente $x$ dalla media $\mu$ 
+$$
+b_x = \text{(avg. rating user x)} - \mu
+$$
+ e $b_i$ rappresenta la deviazione del rating per l'oggetto $i$ rispetto alla media $\mu$
+$$
+b_i = \text{(avg. rating item i)} - \mu
+$$
+ Alla valutazione baseline si aggiunge lo score ottenuto dalla tecnica collaborative filtering: 
+$$
+r_{xi} = b_{xi} + \frac
+{\sum_{j \in N(i;x)} s_{ij} \cdot (r_{xj} - b_{xj}) }
+{\sum_{j \in N(i;x)} s_{ij}}
+$$
+
+
+### 3.4 Confronto tra collaborative filters 
 
 Le due strategie comportano un trade-off tra efficienza ed accuratezza. Lo schema basato sulla similarità degli item è più informativo e permette di ottenere predizioni più affidabili. Questo poiché vi sono generalmente più item che utenti nella matrice di utilità ed è più facile trovare item dello stesso genere che utenti a cui piacciono solo item di un certo genere (il profilo di un utente è quasi univoco). 
 
@@ -244,7 +277,7 @@ Lo schema basato sulla similarità tra utenti è tuttavia più efficiente se vog
 
 
 
-### 3.4 Vantaggi e svantaggi
+### 3.5 Vantaggi e svantaggi
 
 I sistemi Collaborative Filtering lavorano con tutti gli utenti, anche aventi proprietà diverse. Non è necessaria una selezione di proprietà o feature sugli item. Tuttavia, non è possibile eseguire predizioni su nuovi utenti o riguardanti nuovi item. Nella pratica, i sistemi di raccomandazione sono ibridi, ovvero una combinazione tra le due tecniche. 
 
