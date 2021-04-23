@@ -51,7 +51,7 @@ Dove $R$ è l'insieme del rating, ovvero un insieme totalmente ordinato. Esiston
 * rating normalizzato compreso in $[0,1 ]$ 
 * rating binario $\{0, 1\}$ (mi piace, non mi piace) 
 
-<div style="page-break-after: always;"></div>
+
 
 #### 1.3.1 Matrice di utilità
 
@@ -59,7 +59,9 @@ Un sistema di raccomandazione si basa su un insieme di preferenze conosciute esp
 
 Essa rappresenta la conoscenza esistente del sistema sulla relazione tra utenti ed articoli ed è perlopiù *sparsa* poiché un generico utente *recensisce* / *interagisce con* pochi item. Un sistema di raccomandazione vuole predire i valori di rating inesistenti della matrice. 
 
-<img src="./_media/10._Sistemi_di_raccomandazione__2.png" alt="image-20201226105538229" style="margin-top:20px" />
+![image-20210423113003617](_media/10._Sistemi_di_raccomandazione__2.png)
+
+
 
 ### 1.4 Problematiche chiave
 
@@ -216,8 +218,6 @@ Applicare la similarità del coseno direttamente sulle righe della matrice intro
 Esempio: ipotizziamo di avere la seguente matrice sparsa di utilità. Ipotizziamo di voler stimare la valutazione dell'utente 4 rispetto all'item 4. Consideriamo gli utenti che hanno già valutato l'item 4, che risultano essere gli utenti 2,3 e 5. 
 
 <img src="./_media/10._Sistemi_di_raccomandazione__4.png" alt="image-20201226154816521" style="margin-top:20px" />
-
-<div style="page-break-after: always;"></div>
 
 Normalizziamo i profili degli utenti 2, 3, 4 e 5 sottraendo la media degli item valutati a tutte le valutazioni e poniamo a 0 (valutazione neutra) tutti gli item non valutati. 
 
