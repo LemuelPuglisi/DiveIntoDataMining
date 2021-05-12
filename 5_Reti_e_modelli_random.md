@@ -4,6 +4,8 @@
 
 Le reti (o grafi) sono il modello matematico che permette di codificare le interazioni tra le componenti di un sistema complesso. La scienza che studia le reti prende il nome di network science. Formalmente, un grafo è una coppia $G=(V,E)$ dove $V$ è l'insieme di vertici ed $E$ è l'insieme degli archi, dove un arco è una coppia di vertici $(u, v)$. I vertici rappresentano le componenti del sistema, mentre gli archi rappresentano le interazioni tra le componenti. Se $(a,b) \in E$ allora diremo che $b$ è *adiacente* ad $a$. 
 
+> Quando si parla di network (reti) si fa spesso riferimento a sistemi reali, come le social network o il web. In tale contesto si parla di nodi e link tra nodi. Una network viene rappresentata matematicamente da un grafo, dove si usano in maniera formale i termini "vertici" o "archi" .
+
 
 
 #### 1.1.1 Grafi diretti e indiretti
@@ -18,9 +20,9 @@ Altrimenti si parla di grafo *diretto* (o orientato). In altre parole, in un gra
 
 #### 1.1.2 Grafi pesati ed etichettati
 
-Ai nodi e agli archi di una rete possono essere associate delle informazioni aggiuntive legate alla semantica della rete stessa. Se le informazioni associate ai nodi / archi sono valori numerici (interi o reali) si parla di rete *pesata*. Se sono etichette o stringhe si parla di grafo etichettato.  
+Ai nodi e agli archi di una rete possono essere associate delle informazioni aggiuntive legate alla semantica della rete stessa. Se le informazioni associate ai nodi / archi sono valori numerici (interi o reali) si parla di rete *pesata*. Se sono etichette o stringhe si parla di *grafo etichettato*.  
 
-
+<div style="page-break-after: always;"></div>
 
 #### 1.1.3 Grafi bipartiti 
 
@@ -28,25 +30,37 @@ Un grafo bipartito è un grafo in cui i nodi costituiscono due insiemi disgiunti
 
 <img src="https://www.researchgate.net/profile/Joerg-Ruediger_Sack/publication/221427050/figure/fig1/AS:393920468013058@1470929366155/a-A-convex-bipartite-graph-b-A-biconvex-graph-c-A-bipartite-permutation-graph.png" alt="a) A convex bipartite graph. (b) A biconvex graph. (c) A bipartite... |  Download Scientific Diagram" style="margin-top:20px;" />
 
-<div style="page-break-after: always;"></div>
-
-A partire da una rete bipartita è possibile generare due reti chiamate *proiezioni del grafo*, una rispetto all'insieme $U$ e l'altra rispetto all'insieme $V$. La proiezione rispetto ad $U$ è un grafo i cui nodi sono i nodi di $U$ ed un arco collega due nodi $u_1, u_2 \in U$ se e solo se $u_1, u_2$ hanno almeno un adiacente in comune nel grafo bipartito. Definizione analoga per la proiezione rispetto a $V$. 
-
- 
+A partire da una rete bipartita è possibile generare due reti chiamate *proiezioni del grafo*, una rispetto all'insieme $U$ e l'altra rispetto all'insieme $V$. La proiezione rispetto ad $U$ è un grafo i cui nodi sono i nodi di $U$ ed un arco collega due nodi $u_1, u_2 \in U$ se e solo se $u_1, u_2$ hanno almeno un adiacente in comune nel grafo bipartito. Definizione analoga per la proiezione rispetto a $V$.  
 
 <img src="./_media/6._Reti_e_modelli_random__2.png" alt="image-20201213180548244" style="zoom:67%;" />
 
 
 
-#### 1.1.4 Grafi multipartiti
+> In una proiezione è possibile specificare, in un arco tra due nodi, quante connessioni hanno in comune i due nodi. Altrimenti è possibile considerare un multigrafo e aggiungere un arco tra $u_i$ e $u_j$ per ogni nodo $v$ in comune nel grafo bipartito. 
 
-La definizione di grafo bipartito si può estendere facilmente al casi di tre (grafi tripartiti) o più (grafi multipartiti) insiemi disgiunti di nodi. 
+<div style="page-break-after: always;"></div>
+
+#### 1.1.4 Altre tipologie di grafi
+
+* Grafo multipartito: generalizzazione del grafo bipartito, con più insiemi disgiunti di nodi. 
+* Grafo con self-edge (o self-loop): grafo che ammette archi che partono e arrivano allo stesso nodo. 
+* Multigrafo: grafo che ammette più archi tra $i$ e $j$. 
+* Grafo multilayer: un grafo con più layer che permette connessioni sia all'interno che all'esterno del layer. 
+* Grafo multiplex: grafo multilayer in cui i nodi non possono connettersi con nodi di altri layer. 
+
+> Le reti multiplex e multilayer sono molto utilizzate nel contesto della [deanonimizzazione](https://en.wikipedia.org/wiki/Data_re-identification).
+
+![image-20210512094512075](5_Reti_e_modelli_random.assets/image-20210512094512075.png)
 
 
 
 #### 1.1.5 Grafo completo o Clique 
 
-Un grafo completo, o Clique, è un grafo in cui tutte le coppie distinte tra loro sono collegate da un arco. 
+Un *grafo completo*, o *Clique*, è un grafo in cui tutte le coppie distinte tra loro sono collegate da un arco. Il numero massimo di archi in un grafo non direzionato con $N$ nodi è dato dalle combinazioni a due a due dei nodi: 
+$$
+|E|_{max} = \binom{N}{2} = \frac{N(N-1)}{2}
+$$
+Il grado medio di un grafo completo con $N$ nodi è banalmente $N-1$ (ogni nodo è connesso con tutti i nodi, meno che con se stesso). 
 
 ![Complete Graph -- from Wolfram MathWorld](https://mathworld.wolfram.com/images/eps-gif/CompleteGraphs_801.gif)
 
@@ -54,23 +68,40 @@ Un grafo completo, o Clique, è un grafo in cui tutte le coppie distinte tra lor
 
 #### 1.1.6 Grado di un nodo
 
-Il grado (*degree*) di un nodo $u$ è il numero di nodi adiacenti ad $u$ nel grafo. Un nodo con grado 0 è detto *isolato*. In un grafo diretto si fa distinzione tra: 
+Il grado (*degree*) $k_u$ di un nodo $u$ è il numero di nodi adiacenti ad $u$ nel grafo. Un nodo con grado 0 è detto *isolato*. In un grafo diretto si fa distinzione tra: 
 
-* Grado *uscente* del nodo $u$: numero di nodi adiacenti ad $u$ nel grafo
-* Grado *entrante* del nodo $u$: numero di nodi a cui $u$ è adiacente. 
-* Grado *totale* del nodo $u$: somma del grado uscente e del grado entrante. 
+* Grado *uscente* $k_u^{out}$ del nodo $u$: numero di nodi adiacenti ad $u$ nel grafo
+* Grado *entrante* $k_u^{in}$ del nodo $u$: numero di nodi a cui $u$ è adiacente. 
+* Grado *totale* $k_u$ del nodo $u$: somma del grado uscente e del grado entrante. 
 
 Un grafo è detto *regolare* se ogni nodo ha lo stesso grado. 
 
 ![Data replication in random regular graphs](https://thomasvilhena.com/images/p19/regular-graphs.png)
 
+<div style="page-break-after: always;"></div>
+
+#### 1.1.7 Grado medio
+
+Il grado medio della rete in un grafo indiretto è
+$$
+\bar{k} = \langle k \rangle = \frac{1}{N} \sum_{i=1}^N k_{u_i} = \frac{2|E|}{N}
+$$
+Poiché ogni arco nell'insieme $E$ sarà *bidirezionale*. Invece in un grafo diretto avremo
+$$
+\bar{k}^{in} = \langle k^{in} \rangle = \frac{1}{N}\sum_{i=1}^N k_{u_i}^{in}    = \frac{|E|}{N} \\
+\bar{k}^{out} = \langle k^{out} \rangle = \frac{1}{N}\sum_{i=1}^N k_{u_i}^{out}    = \frac{|E|}{N}
+$$
+Quindi vale sempre $\bar{k}^{in} = \bar{k}^{out}$, poiché gli archi uscenti di un nodo saranno archi entranti di un altro nodo.
 
 
-#### 1.1.7 Distribuzione dei gradi
 
-La distribuzione dei gradi $P$ è una distribuzione di probabilità, dove $P_k$ rappresenta la probabilità che un generico nodo della rete abbia grado $k$. La distribuzione dei gradi è la proprietà più importante della rete, poiché fenomeni come la robustezza della rete o la diffusione dei virus si possono spiegare attraverso tale proprietà. Data una rete reale, $P_k$ si ottiene dividendo il numero $N_k$ di nodi con grado $k$ per il numero di nodi $N$ della rete. 
+#### 1.1.9 Rappresentazione di un grafo
 
+È possibile rappresentare un grafo con $N$ nodi attraverso una matrice di adiacenza $A$ di dimensione $N \times N$, dove l'elemento $a_{ij} = 1$ se esiste un arco da $u_i$ a $u_j$, $a_{ij}=0$ altrimenti. Se il grafo è *pesato*, allora la matrice riporterà il peso dell'arco tra $i$ e $j$ nell'elemento $a_{ij}$, 0 altrimenti. 
 
+Questa rappresentazione risulta poco conveniente in termini di spazio, poiché un nodo è spesso collegato a pochi altri nodi della rete. Una rappresentazione più efficiente risulta essere la lista di adiacenza, dove ad ogni nodo è appesa la lista di nodi adiacenti ad esso, o anche la lista di archi.  
+
+<div style="page-break-after: always;"></div>
 
 ### 1.2 Cammini tra nodi
 
@@ -79,83 +110,113 @@ $$
 (u = i_0, i_1), (i_1, i_2), ..., (i_{n-1}, i_n = v)
 $$
 
+In generale, possono esserci più cammini tra due nodi generici. Definiamo: 
 
-#### 1.2.1 Lunghezza, distanza e diametro
+* *Lunghezza del cammino*: la quantità $n$ di archi
+* *Cammino minimo*: cammino di lunghezza minima 
+* *Distanza*: lunghezza del cammino minimo
+* *Diametro* di $G$: massima distanza tra due nodi in $G$
 
-La quantità $n$ di archi è detta *lunghezza* del cammino. 
-In generale possono esistere più cammini tra due nodi. 
-Il cammino *minimo* è il cammino di lunghezza minima. 
-Possono esistere più cammini minimi tra due nodi. 
-La *distanza* $D$ tra due nodi è la lunghezza di un cammino minimo tra i due. 
-Il *diametro* di un grafo è la massima distanza tra due nodi del grafo. 
+![image-20210512103759210](5_Reti_e_modelli_random.assets/image-20210512103759210.png)
 
-<img src="https://i.stack.imgur.com/91KjB.png" alt="Finding a &quot;not-shortest&quot; path between two vertices - Mathematica Stack  Exchange" style="zoom: 80%;" />
-
-
-
-#### 1.2.2 Cicli nel grafo
-
-Un ciclo è un cammino in cui nodo di partenza e nodo finale coincidono: 
+Definiamo **ciclo** un cammino in cui nodo di partenza e nodo finale coincidono: 
 $$
 (u = i_0, i_1), (i_1, i_2), ..., (i_{n-1}, i_n = u)
 $$
 Un ciclo di lunghezza 1 è detto *cappio* o *self-loop*. Un grafo che non contiene cicli è detto *aciclico*, o anche *albero*. 
 
-<img src="https://www.researchgate.net/profile/Elisa_Bertino2/publication/2431833/figure/fig2/AS:339592545882121@1457976580886/Example-of-cyclic-and-acyclic-graphs.png" alt="Example of cyclic and acyclic graphs | Download Scientific Diagram" style="zoom:50%;" />
-
-
-
-#### 1.2.3 Connettività di un grafo
-
-Due nodi $i$ e $j$ si dicono *connessi* se esiste un cammino tra essi, altrimenti si diranno *disconnessi*. Un grafo si dice *connesso* se tutte le coppie di nodi sono connesse, *disconnesso* altrmenti. Un grafo disconnesso $G$ risulta formato dall'unione di due o più sottografi connessi, chiamati *componenti*. Un sottografo è formato da un sottoinsieme di nodi di $G$ e dagli archi che li collegano.    
-
-<img src="https://i1.wp.com/www.steveclarkapps.com/wp-content/uploads/2019/03/Screenshot-2019-04-30-at-15.15.11.png?resize=812%2C330&ssl=1" alt="Graphs & Graph Search Algorithms | Steve Clark Apps" style="margin:20px;zoom:80%;" />
-
-Per i grafi diretti o orientati si parla di connettività *forte* o *debole*. Un grafo orientato $G$ è detto *fortemente connesso* se, per ogni coppia di nodi $u,v \in V$ esiste un cammino tra $u$ e $v$ in $G$. È invece detto *debolmente connesso* se, per ogni coppia di nodi $u,v \in V$, esiste un cammino tra $u$ e $v$ in $G$, oppure esiste un cammino nel grafo $G'$ ottenuto da $G$ sostituendo gli archi direzionati con archi non direzionati. Da queste definizioni derivano, in maniera analoga a prima, i concetti di *componente fortemente connessa* e *componente debolmente connessa*. 
-
-<img src="https://www.researchgate.net/profile/Zhehan_Yi/publication/327464815/figure/fig1/AS:667706030305282@1536204931145/a-Strongly-connected-directed-graph-b-directed-spanning-tree.ppm" alt="a) Strongly-connected directed graph; (b) directed spanning tree | Download  Scientific Diagram" style="margin-top:20px;" />
+![image-20210512103833069](5_Reti_e_modelli_random.assets/image-20210512103833069.png)
 
 <div style="page-break-after: always;"></div>
 
-### 1.4 Coefficiente di clustering 
+#### 1.2.1 Connettività di un grafo
 
-#### 1.4.1 Coefficiente di clustering locale 
+Due nodi $i$ e $j$ si dicono *connessi* se esiste un cammino tra essi, altrimenti si diranno *disconnessi*. Un grafo si dice *connesso* se tutte le coppie di nodi sono connesse, *disconnesso* altrmenti. Un grafo disconnesso $G$ risulta formato dall'unione di due o più sottografi connessi, chiamati *componenti*. Un sottografo è formato da un sottoinsieme di nodi di $G$ e dagli archi che li collegano.    
 
-Il coefficiente di clustering $C_u$ di un nodo $u$ è una misura di quanto gli adiacenti di $u$ siano connessi tra loro. Formalmente: 
+![image-20210512102127032](5_Reti_e_modelli_random.assets/image-20210512102127032.png)
+
+Per i grafi diretti o orientati si parla di connettività *forte* o *debole*. Un grafo orientato $G$ è detto *fortemente connesso* se, per ogni coppia di nodi $u,v \in V$ esiste un cammino tra $u$ e $v$ in $G$. È invece detto *debolmente connesso* se, per ogni coppia di nodi $u,v \in V$, esiste un cammino tra $u$ e $v$ in $G$, oppure esiste un cammino nel grafo $G'$ ottenuto da $G$ sostituendo gli archi direzionati con archi non direzionati. Da queste definizioni derivano, in maniera analoga a prima, i concetti di *componente fortemente connessa* e *componente debolmente connessa*. 
+
+![image-20210512102145190](5_Reti_e_modelli_random.assets/image-20210512102145190.png)
+
+Definiamo *arco ponte* (**bridge**) quell'*arco* che, se cancellato, trasforma un grafo connesso in un grafo disconnesso. Chiamiamo *punto di articolazione* (**hub**) quel *nodo* che, se cancellato, trasforma un grafo connesso in un grafo disconnesso. Chiamiamo *componente connessa gigante* la componente connessa più grande. 
+
+
+
+### 1.3 Descrivere una rete
+
+È possibile descrivere una rete attraverso le sue proprietà, come la *distribuzione dei gradi* $P(k)$, la lunghezza media dei cammini $h$, o il coefficiente di clustering $C$. 
+
+
+
+#### 1.1.8 Distribuzione dei gradi
+
+La distribuzione dei gradi $P$ è una distribuzione di probabilità, dove $P(k)$ rappresenta la probabilità che un generico nodo della rete abbia grado $k$. La distribuzione dei gradi è la proprietà più importante della rete, poiché fenomeni come la robustezza della rete o la diffusione dei virus si possono spiegare attraverso tale proprietà. Data una rete reale, $P_k$ si ottiene dividendo il numero $N_k$ di nodi con grado $k$ per il numero di nodi $N$ della rete. 
+
+![image-20210512103149717](5_Reti_e_modelli_random.assets/image-20210512103149717.png)
+
+
+
+#### 1.3.1 Coefficiente di clustering 
+
+Il coefficiente di clustering $C_u$ di un nodo $u$ è una misura di quanto gli adiacenti di $u$ siano connessi tra loro. Essendo $k_u$ il grado del nodo, allora vi saranno $k_u$ nodi adiacenti ad $u$. Il numero massimo di archi possibili tra $k_u$ nodi è dato dalla formula precedentemente studiata: 
+$$
+\frac{k_u \times (k_u - 1)}{2}
+$$
+Definiamo $L_u$ il numero di archi effettivamente esistenti tra i $k_u$ adiacenti ad $u$. Definiamo il coefficiente di clustering come il rapporto tra il numero di archi esistenti ed il numero di archi possibili: 
 $$
 C_u = \frac {2L_u} {k_u \times (k_u-1)} \in [0,1]
 $$
-dove $k_u$ è il grado del nodo $u$ ed $L_u$ è il numero di archi esistenti tra i $k_u$ adiacenti ad $u$.  In altre parole, il coefficiente di clustering misura la densità locale della rete in un nodo $u$: più densamente interconnesso è il vicinato di $u$, più alto è il coefficiente di clustering. 
+In altre parole, il coefficiente di clustering misura la densità locale della rete in un nodo $u$: più densamente interconnesso è il vicinato di $u$, più alto è il coefficiente di clustering. 
 
-<img src="https://media.geeksforgeeks.org/wp-content/uploads/clustering-coefficient-in-graph-theory-1.png" alt="Clustering Coefficient in Graph Theory - GeeksforGeeks" style="zoom:80%; margin:20px" />
+![image-20210512102638340](5_Reti_e_modelli_random.assets/image-20210512102638340.png)
 
-Definiamo coefficiente di clustering *medio* $\langle C \rangle$ la media dei coefficienti di clustering di tutti i nodi della rete: 
+Definiamo **coefficiente di clustering *medio*** $\langle C \rangle$ la media dei coefficienti di clustering di tutti i nodi della rete: 
 $$
 \langle C \rangle = \frac 1 {|V|} \sum_{i \in V} C_i
 $$
 
+Il concetto di **coefficiente di clustering *globale*** è basato su triple di nodi. Una tripla consiste di tre nodi connessi da due (tripla aperta) o tre (tripla chiusa) collegamenti. Ogni tripla è incentrata su un nodo. Un triangolo consiste di tre triple chiuse incentrate sui tre stessi nodi che lo compongono (clique con 3 nodi). Definiamo coefficiente di clustering globale $C_{\Delta}$ il rapporto tra il numero di triangoli della rete (clique con 3 nodi) ed il numero totale di triple di nodi. 
 
-#### 1.4.2 Coefficiente di clustering globale 
 
-Il concetto di coefficiente di clustering *globale* è basato su triple di nodi. Una tripla consiste di tre nodi connessi da due (tripla aperta) o tre (tripla chiusa) collegamenti. Ogni tripla è incentrata su un nodo. Un triangolo consiste di tre triple chiuse incentrate sui tre stessi nodi che lo compongono (clique con 3 nodi).  
 
-Definiamo coefficiente di clustering globale $C_{\Delta}$ il rapporto tra il numero di triangoli della rete (clique con 3 nodi) ed il numero totale di triple di nodi. 
+#### 1.3.2 Numero di cammini
+
+Supponiamo di voler calcolare il numero $H_{uv}^h$ di cammini di lunghezza $h$ tra $u$ e $v$. Se cerchiamo cammini di lunghezza $h=1$, allora basta consultare la matrice di adiacenza e vedere se l'elemento $A_{uv}$ sia asserito. Se cerchiamo cammini di lunghezza $h=2$, allora dobbiamo considerare un qualsiasi altro nodo che li connetta, per cui: 
+$$
+H_{uv}^{(2)} = \sum_{k \in V} A_{uk} A_{kv} = [A^2]_{uv}
+$$
+In generale, il numero di cammini tra $u$ e $v$ di lunghezza $h$ è
+$$
+H_{uv}^{(h)} = [A^h]_{uv}
+$$
+È possibile effettuare questa analisi attraverso una catenia di Markov, in cui la matrice di adiacenza (normalizzata) corrisponde alla matrice di transizione. 
+
+
+
+#### 1.3.3 Lunghezza media dei cammini
+
+La lunghezzza media $\bar h$ di un cammino per un grafo connesso $G$ (o una componente) o una componente fortemente connessa di un grafo diretto, corrisponde a
+$$
+\bar{h} = \frac{1}{2E_{max}} \sum_{u \ne v} h_{uv}
+$$
+Il valore  $h_{uv}$ indica la distanza tra i nodi $u$ e $v$. Normalizziamo per il numero massimo di archi perché vogliamo indicare tutti i possibili cammini, e dividiamo per due per evitare di considerare due volte lo stesso cammino (nel caso di grafi indiretti). 
 
 <div style="page-break-after: always;"></div>
 
-### 1.5 Centralità di un nodo
+### 1.4 Centralità di un nodo
 
 La centralità è una misura dell'importanza di un nodo nella rete. Esistono diverse misure di centralità, a seconda del criterio utilizzato per misurare l'importanza di un nodo. 
 
 
 
-#### 1.5.1 Degree centrality
+#### 1.4.1 Degree centrality
 
 La centralità basata sul grado è la misura più semplice di centralità. La degree centrality è semplicemente il grado del nodo. Più alto è il grado del nodo e più è importante. 
 
 ![image-20201213193402633](./_media/6._Reti_e_modelli_random__10.png)
 
-#### 1.5.2 Betweenness centrality 
+#### 1.4.2 Betweenness centrality 
 
 La betweenneess centrality è basata sul concetto di betweenness di un nodo: dato un nodo $v$ e due nodi qualsiasi del grafo $i$ e $j$, si calcola $\sigma_{ij}$, ovvero la frazione di cammini minimi tra $i$ e $j$ che passano per $v$. 
 
@@ -163,7 +224,7 @@ La betweenness di $v$ è ottenuta sommando $\sigma_{i.j}$ per tutte le coppie $i
 
 ![image-20201213194033180](./_media/6._Reti_e_modelli_random__11.png)
 
-#### 1.5.3 Closeness centrality 
+#### 1.4.3 Closeness centrality 
 
 La closeness centrality si basa sulla vicinanza media di un nodo rispetto a tutti gli altri nodi del grafo. Dato un nodo $v$, si calcola la lunghezza media $L_v$ dei cammini minimi da $v$ agli altri nodi del grafo. La closeness centrality di $v$ è definita come il reciproco di $L_v$. 
 
@@ -171,7 +232,7 @@ La closeness centrality di un nodo $v$ è una misura della velocità media con c
 
 ![image-20201213194359233](./_media/6._Reti_e_modelli_random__12.png)
 
-#### 1.5.4 PageRank centrality
+#### 1.4.4 PageRank centrality
 
 La PageRank centrality si basa sull'osservazione che le connessioni di un nodo con gli altri nodi non hanno tutte lo stesso valore (come assunto invece dalla degree centrality). Connessioni a nodi con elevato grado hanno un peso maggiore rispetto a connessioni a nodi di grado minore. 
 
@@ -181,7 +242,7 @@ PR(u) = \sum_{v \in B_u} \frac {PR(v)}{k_v}
 $$
 Dove $B_u$ è l'insieme dei nodi che hanno $u$ come adiacente e $k_v$ è il grado uscente di $v$. 
 
-<div style="page-break-after: always;"></div>
+
 
 #### 1.5.5 Calcolo del PageRank 
 
@@ -209,9 +270,9 @@ Iterando questo scambio di tesori si otterrà una situazione di equilibrio in cu
 
 ## 2. Modelli random
 
-Uno degli obiettivi della Network science è quello di costruire modelli in grado di riprodurre proprietà specifiche della rete reale, legate ad esempio al grado dei nodi, al diametro della rete etc. Le reti reali, a parte qualche rara eccezione (es. reticoli), non hanno una struttura regolare, ma presentano una certa randomicità. 
+Uno degli obiettivi della Network science è quello di costruire modelli in grado di riprodurre proprietà specifiche della rete reale, legate ad esempio al grado dei nodi, al diametro della rete etc. Le reti reali, a parte qualche rara eccezione (es. reticoli), non hanno una struttura regolare, ma presentano una certa randomicità. Sin dagli anni '50 sono stati teorizzati e sviluppati modelli probabilistici, detti modelli random, per cercare di spiegare queste proprietà intrinseche delle reti reali. Tali modelli sono generativi, cioè permettono di generare reti con certe caratteristiche.  
 
-Sin dagli anni '50 sono stati teorizzati e sviluppati modelli probabilistici, detti modelli random, per cercare di spiegare queste proprietà intrinseche delle reti reali. Tali modelli sono generativi, cioè permettono di generare reti con certe caratteristiche. 
+Supponiamo di avere un modello random che generi una rete con le stesse caratteristiche delle reti reali. Supponiamo anche di stare analizzando una rete reale e di ottenere certi risultati (es. coefficiente di clustering, distribuzione dei gradi etc). Per capire se la rete reale ha proprietà *attese* o *sorprendenti*, essa va confrontata (quindi sottoposta a test di ipotesi) con delle reti generate da un modello random nullo che riesca a catturare le proprietà delle reti reali. 
 
 
 
@@ -225,7 +286,7 @@ Il primo modello random fu proposto da due matematici ungheresi, Erdos e Renyi, 
 
 Il modello appena descritto è detto modello $G(N,p)$, perché genera un grafo random partendo dal numero di nodi $N$ e dalla probabilità $p$ che esista un arco tra due nodi. Una variante è rappresentata dal modelo $G(N, L)$, in cui si genera un grafo random con $N$ nodi ed $L$ archi random. 
 
-In questa variante si parte da una rete con $N$ nodi isolati. Ad ogni passo si sceglie una coppia di nodi scelti a caso e non ancora connessi tra loro e si aggiunge un arco tra essi. Si prosegue sino a che la rete non contiene $L$ archi. I due modelli sono equivalenti tra loro. 
+In questa variante si parte da una rete con $N$ nodi isolati. Ad ogni passo si sceglie una coppia non connessa e casuale e si aggiunge un arco tra essi. Si prosegue sinché la rete non contiene $L$ archi. I due modelli sono equivalenti tra loro. 
 
 
 
@@ -244,6 +305,10 @@ Dove $(1-p)^{N-1-k}$ è la probabilità che $N-1-k$ nodi restanti non creino un 
 Si può dimostrare che il grado medio della rete random è: 
 $$
 \langle k \rangle = p (N-1)
+$$
+Banalmente poiché una variabile binomiale è data dalla somma di $n$ variabili Bernoulliane, il cui valore atteso è $p$. Allo stesso modo si può dimostra che la varianza rispetto al grado medio corrisponde a  
+$$
+\sigma = (N-1)p(1-p)
 $$
 Per $N \gg \langle k \rangle$ la distribuzione binomiale è ben approssimata da una distribuzione di Poisson: 
 $$
@@ -277,7 +342,7 @@ C_n = \frac {2\langle L_n \rangle}{k_n(k_n-1)} = p
 $$
 Dato che $\langle k \rangle = p(N-1)$ allora: 
 $$
-C_n = p = \frac {\langle k \rangle} {N-1} 
+C_n = p = \frac {\langle k \rangle} {N-1}
 $$
 Quindi il coefficiente di clustering è inversamente proporzionale al numero di nodi $N$ nella rete e direttamente proporzionale al grado medio. Si noti che il coefficiente di clustering del nodo è indipendente dal grado del singolo nodo. Considerazioni analoghe possono essere fatte per il coefficiente di clustering globale. 
 
@@ -291,9 +356,9 @@ La distribuzione dei gradi nelle reti reali in figura è molto diversa rispetto 
 
 Sia per il coefficiente di clustering locale che per quello globale vi è una significativa differenza: nella rete reale, il coefficiente di clustering è più alto rispetto a quello di una rete random. 
 
-![image-20201214175100709](./_media/6._Reti_e_modelli_random__17.png)
+![image-20210512115325341](5_Reti_e_modelli_random.assets/image-20210512115325341.png)
 
-<div style="page-break-after: always;"></div>
+
 
 #### 2.1.6 Proprietà riprodotta: small-world
 
