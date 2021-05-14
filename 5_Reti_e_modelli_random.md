@@ -465,7 +465,7 @@ Si osservi il plot che mostra nell'ascisse l'esponente di clustering e nelle ord
 
 #### Teorema 
 
-Sia $d(u,v)$ la distanza tra due nodi $u$ e $v$ di una griglia *bidimensionale* ($d=2$) di $n$ nodi. Se tra due vertici $u$ e $v$ viene aggiunto un arco remoto con probabilità $P(u \to v) = \frac{1}{d(u,v)^{\alpha}}$ con $\alpha = 2$ allora esiste un algoritmo di routing decentralizzato $A$ ed una costante $\alpha_2$ indipendente da $n$ tali che, quando $p=1$ (...) e $q=1$ (numero di archi long range per nodo) il numero di passi impiegati da $A$ per trasmettere un messaggio tra una coppia qualsiasi di nodi è al più $\alpha_2 (\log n)^2$. 
+Sia $d(u,v)$ la distanza tra due nodi $u$ e $v$ di una griglia *bidimensionale* ($d=2$) di $n$ nodi. Se tra due vertici $u$ e $v$ viene aggiunto un arco remoto con probabilità $P(u \to v) = \frac{1}{d(u,v)^{\alpha}}$ con $\alpha = 2$ allora esiste un algoritmo di routing decentralizzato $A$ ed una costante $\alpha_2$ indipendente da $n$ tali che, quando $p=1$ (distanza massima affinché un nodo sia considerato "vicino") e $q=1$ (numero di archi long range per nodo) il numero di passi impiegati da $A$ per trasmettere un messaggio tra una coppia qualsiasi di nodi è al più $\alpha_2 (\log n)^2$. 
 
 > Alcune referenze per il modello di Kleinberg: 
 >
