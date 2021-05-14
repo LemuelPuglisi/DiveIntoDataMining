@@ -66,7 +66,7 @@ Il grado medio di un grafo completo con $N$ nodi è banalmente $N-1$ (ogni nodo 
 
 
 
-#### 1.1.6 Grado di un nodo
+#### 1.1.6 Grado di un nodo e grafo regolare
 
 Il grado (*degree*) $k_u$ di un nodo $u$ è il numero di nodi adiacenti ad $u$ nel grafo. Un nodo con grado 0 è detto *isolato*. In un grafo diretto si fa distinzione tra: 
 
@@ -218,9 +218,17 @@ La centralità basata sul grado è la misura più semplice di centralità. La de
 
 #### 1.4.2 Betweenness centrality 
 
-La betweenneess centrality è basata sul concetto di betweenness di un nodo: dato un nodo $v$ e due nodi qualsiasi del grafo $i$ e $j$, si calcola $\sigma_{ij}$, ovvero la frazione di cammini minimi tra $i$ e $j$ che passano per $v$. 
+La betweenneess centrality è basata sul concetto di betweenness di un nodo: dato un nodo $v$ e due nodi qualsiasi del grafo $i$ e $j$, si calcola $\sigma_{ij}$, ovvero la frazione di cammini minimi tra $i$ e $j$ che passano per $v$. La betweenness di $v$ è ottenuta sommando $\sigma_{i.j}$ per tutte le coppie $i,j \in V$
 
-La betweenness di $v$ è ottenuta sommando $\sigma_{i.j}$ per tutte le coppie $i,j \in V$. In base a questa definizione, un nodo è centrale se si trova nel mezzo di molti cammini di comunicazione tra nodi del grafo. 
+$$
+C_{B}(v) = \sum_{i < j} \sigma_{ij} 
+=\sum_{i < j} \frac{g_{ij}(v)}{g_{ij}}
+$$
+Dove $g_{ij}$ è il numero di cammini minimi da $i$ a $j$, mentre $g_{ij}(v)$ indica quanti di questi contengono il nodo $v$. Usualmente, tale metrica si normalizza come: 
+$$
+C'_B = C_B / [\frac{(n-1)(n-2)}{2}]
+$$
+Dove al denominatore si ha il coefficiente binomiale $\binom{n-1}{2}$ che specifica il numero di cammini possibili tra gli $n-1$ nodi restanti nella rete. In base a questa definizione, un nodo è centrale se si trova nel mezzo di molti cammini di comunicazione tra nodi del grafo. 
 
 ![image-20201213194033180](./_media/6._Reti_e_modelli_random__11.png)
 
@@ -290,9 +298,9 @@ In questa variante si parte da una rete con $N$ nodi isolati. Ad ogni passo si s
 
 
 
-#### 2.1.2 Proprietà del grafo random
+#### 2.1.2 Distribuzione dei gradi (e degli archi)
 
-Per ricavare l'espressione della *distribuzione dei gradi* di una rete random con $N$ nodi, occorre calcolare la probabilità $p_k$ che un generico nodo abbia grado $k$. Ipotizziamo di essere al turno di assegnazione degli archi di generico nodo $u \in V$, la probabilità che $u$ abbia grado $k$ è la probabilità che su $N-1$ nodi rimanenti, $k$ nodi si colleghino ad $u$. Tale distribuzione prende il nome di distribuzione binomiale ed è definita per i generici $n$ e $k$ come segue: 
+Per ricavare l'espressione della *distribuzione dei gradi* di una rete random con $N$ nodi, occorre calcolare la probabilità $p_k$ che un generico nodo abbia grado $k$. Ipotizziamo di essere al turno di assegnazione degli archi di generico nodo $u \in V$, la probabilità che $u$ abbia grado $k$ è la probabilità che su $N-1$ nodi rimanenti, $k$ nodi si colleghino ad $u$. Tale distribuzione prende il nome di *distribuzione binomiale* ed è definita per i generici $n$ e $k$ come segue: 
 $$
 P (X = k) = \binom{n}{k} p^k(1-p)^{n-k}
 $$
@@ -300,9 +308,7 @@ Nel nostro caso $n = N-1$ e $k=k$, per cui:
 $$
 P_k = \binom{N-1}{k} p^k(1-p)^{N-1-k}
 $$
-Dove $(1-p)^{N-1-k}$ è la probabilità che $N-1-k$ nodi restanti non creino un collegamento con $u$, mentre $p^k$ è la probabilità che $k$ nodi si colleghino ad $u$. Il coefficiente binomiale iniziale prende in considerazione tutti i modi in cui è possibile selezionare $k$ nodi da collegare ad $u$ tra gli $N-1$ rimanenti. 
-
-Si può dimostrare che il grado medio della rete random è: 
+Dove $(1-p)^{N-1-k}$ è la probabilità che $N-1-k$ nodi restanti non creino un collegamento con $u$, mentre $p^k$ è la probabilità che $k$ nodi si colleghino ad $u$. Il coefficiente binomiale iniziale prende in considerazione tutti i modi in cui è possibile selezionare $k$ nodi da collegare ad $u$ tra gli $N-1$ rimanenti. Avendo associato la distribuzione dei gradi ad una binomiale, è possibile calcolare il valore atteso
 $$
 \langle k \rangle = p (N-1)
 $$
@@ -310,6 +316,12 @@ Banalmente poiché una variabile binomiale è data dalla somma di $n$ variabili 
 $$
 \sigma = (N-1)p(1-p)
 $$
+Allo stesso modo, è possibile dimostrare che la probabilità che una rete random abbia esattamente $E$ archi totali è distribuita secondo una binomiale:
+$$
+P(E) = \binom{E_{max}}{E} p^E (1-p)^{E_{max} - E}
+$$
+Con valore atteso $E[X] = pE_{max}$ e varianza $\sigma=E_{max}p(1-p)$.
+
 Per $N \gg \langle k \rangle$ la distribuzione binomiale è ben approssimata da una distribuzione di Poisson: 
 $$
 p_k = \exp(-\langle k \rangle \frac{\langle k \rangle^k}{k! } )
@@ -320,17 +332,7 @@ Dal momento che la distribuzione dei gradi è binomiale, in una rete random i no
 
 
 
-#### 2.1.3 Fenomeno Small-World
-
-La distanza media tra i nodi della rete è: 
-$$
-\langle d \rangle \approx \frac {\ln N}{\ln \langle k \rangle}
-$$
-Dal momento che $\ln(N) \ll N$, nella rete random le distanze tra i nodi della rete sono mediamente piccole, tale fenomeno prende il nome di *small world*. Il termine: $1 / \ln\langle k \rangle$ implica che più è densa la rete, più piccola è la distanza tra i nodi. 
-
-
-
-#### 2.1.4 Coefficiente di clustering nel grafo random 
+#### 2.1.3 Coefficiente di clustering nel grafo random 
 
 Per calcolare il coefficiente di clustering di un generico nodo $n$, occorre prima stimare il numero atteso (media) di archi tra gli adiacenti di $n$. Se $k_n$ è il grado di $n$, il numero atteso di archi è: 
 $$
@@ -348,15 +350,49 @@ Quindi il coefficiente di clustering è inversamente proporzionale al numero di 
 
 
 
+#### 2.1.4 Definizione di espansione
+
+Un grafo $G(V,E)$ ha una espansione $\alpha$ se $\forall S \subseteq V$ si ha 
+$$
+\text{#archi uscenti da $S$} \ge \alpha \min(|S|, |V \setminus S|)
+$$
+o alternativamente 
+$$
+\alpha = \min_{S \subseteq V} \frac
+{\text{#edges leaving $S$}}
+{\min(|S|, |V \setminus S|)}
+$$
+L'espansione misura la robustezza della rete: per disconnettere $l$ nodi è necessario rimuovere un numero maggiore o uguale ad $l \cdot \alpha$ archi. 
+
+![image-20210514091739617](5_Reti_e_modelli_random.assets/image-20210514091739617.png)
+
+##### Teorema n.1 
+
+Sia $G$ un grafo random regolare di grado 3 con $n$ nodi, allora esiste una costante $\alpha > 0$ ed indipendente da $n$ tale che l'espansione del grafo è sempre maggiore o uguale ad $\alpha$. 
+
+##### Teorema n.2 
+
+Sia $G$ un grafo con $n$ nodi e con espansione $\alpha$, allora per tutte le coppie di nodi $u$ e $v$ esiste un cammino con $O(\frac{\log n}{\alpha})$ archi che li connette. 
+
+
+
+#### 2.1.4 Lunghezza dei cammini e fenomeno small world 
+
+Dati i teoremi precedenti, possiamo affermare che la distanza (o lunghezza dei cammini minimi) tra due generici nodi $u$ e $v$ è $O(\log n)$. È possibile dimostrare che:
+$$
+\langle d \rangle \approx \frac {\ln N}{\ln \langle k \rangle}
+$$
+Dal momento che $\ln(N) \ll N$, nella rete random le distanze tra i nodi della rete sono mediamente piccole, tale fenomeno prende il nome di *small world*. Il termine: $1 / \ln\langle k \rangle$ implica che più è densa la rete, più piccola è la distanza tra i nodi. 
+
+
+
 #### 2.1.5 Confronto tra reti reali e reti random
 
-La distribuzione dei gradi nelle reti reali in figura è molto diversa rispetto a quella della rete random. Nelle reti reali si osservano molti nodi con grado basso e pochi nodi con grado alto. 
+Prendiamo come esempio la rete MSN, ovvero una rete reale che rappresenta i collegamenti tra gli utenti in Microsoft Messenger. Confrontiamo le proprietà di tale rete con una rete generata da un modello di Erdos-Renyi. Iniziamo con la **distribuzione dei gradi**: osserviamo che le due distribuzioni differiscono. Le reti reali assumono una distribuzione dei gradi molto simile ad una esponenziale (non lo è) che studieremo più avanti. 
 
-![image-20201214173353535](./_media/6._Reti_e_modelli_random__16.png)
+![image-20210514093922938](5_Reti_e_modelli_random.assets/image-20210514093922938.png)
 
-Sia per il coefficiente di clustering locale che per quello globale vi è una significativa differenza: nella rete reale, il coefficiente di clustering è più alto rispetto a quello di una rete random. 
-
-![image-20210512115325341](5_Reti_e_modelli_random.assets/image-20210512115325341.png)
+La **distanza media** tra due nodi nella rete MSN è $6.6$; il modello random riproduce tale proprietà con un valore medio di circa $8.2$ ($O(\log n)$). Il **coefficiente di clustering** differisce nelle due reti, con un valore di 0.11 per la rete MSN ed un valore vicino allo 0 per la rete random. Possiamo affermare che le reti reali sono *diverse* dalle reti random. 
 
 
 
@@ -366,9 +402,13 @@ L'unica proprietà delle reti reali che la rete random riesce a cogliere abbasta
 
 ![image-20201214174929548](./_media/6._Reti_e_modelli_random__18.png)
 
+
+
 ##### L'esperimento di Milgram 
 
 Milgram selezionò in maniera casuale un gruppo di studenti americani del Midwest e chiese loro di spedire un pacchetto ad un estraneo del Massachusetts, a migliaia di chilometri di distanza. Ad ognuno di questi studenti Milgram consegnò una lettera con indicazioni riguardo il nome del destinatario, il suo impiego e la zona di residenza, senza però specificare l’indirizzo esatto. Ad ogni partecipante all’esperimento fu quindi chiesto di spedire il proprio pacchetto ad una persona da loro conosciuta che, a loro giudizio, potesse avere maggiori probabilità di conoscere il destinatario finale. Quella persona avrebbe fatto a sua volta lo stesso, fino a quando il pacchetto non fosse arrivato a destinazione. Al termine dell’esperimento, Milgram scoprì con sorpresa che il numero medio di intermediari era 5.2, quindi un numero piccolo e molto vicino a quello teorizzato da Kharinty nel 1929. Ad oggi l'esperimento è stato riproposto e riconfermato attraverso le reti sociali ed altri tipi di reti digitalizzate. 
+
+
 
 ##### Definizione di small-world 
 
@@ -378,11 +418,11 @@ $$
 $$
 Ovvero, una rete è small-world se la distanza media tra i nodi ha una dipendenza logaritmica rispetto alla dimensione della rete (numero di nodi). 
 
-<div style="page-break-after: always;"></div>
+
 
 ### 2.2 Modello Watts-Strogatz 
 
-Il modello Erdos-Renyi approssima bene la proprietà small-world, ma non il coefficiente di clustering, locale e globale, della rete reale. Nel '98 Duncan Watts e Steven Strogatz proposero un'estensione al modello Erdos-Renyi, chiamato modello Watts-Strogatz o modello small-world. 
+Il modello Erdos-Renyi approssima bene la proprietà small-world, ma non il coefficiente di clustering della rete reale. Nel '98 Duncan Watts e Steven Strogatz proposero un'estensione al modello Erdos-Renyi, chiamato modello Watts-Strogatz o modello small-world. 
 
 Il modello consente di creare delle reti random che rappresentano una interpolazione tra il grafo regolare, che ha un alto coefficiente di clustering ma non esibisce la proprietà small-world, ed il grafo random, che ha basso coefficiente di clustering ma gode della proprietà small-world. 
 
@@ -392,11 +432,61 @@ Sia $n$ il numero di nodi della rete da generare, $p$ il parametro di rewiring e
 
 ![image-20201214180922899](./_media/6._Reti_e_modelli_random__19.png)
 
-Sia $\langle C(p) \rangle$ il coefficiente di clustering al variare di $p$ e $\langle C(0) \rangle$ il coefficiente di clustering della rete regolare ($p=0$). Allo stesso modo sia $\langle d(p) \rangle$ la distanza media tra i nodi al variare di $p$ e $\langle d(0) \rangle$ la distanza media tra i nodi della rete regolare ($p=0$). Se grafichiamo i rapporti dei valori rispettivamente, otterremo il plot nella figura sottostante. All'aumentare di $p$ la distanza media diminuisce (si acquisisce la prop. small-word), ma diminuisce anche il coefficiente di clustering. 
+Plottando l'andamento del coefficiente di clustering e della distanza media tra nodi al variare del parametro $p$, notiamo che il coefficiente di clustering decresce lentamente, mentre la distanza decresce più velocemente. È possibile travare una regione in cui il coefficiente di clustering sia ancora alto, mentre la distanza sia piccola (come indicato in foto). Il modello di Watts-Strogatz riesce a catturare due delle proprietà delle reti reali, tuttavia non riesce a riprodurre la distribuzione dei gradi. 
 
-![image-20201214181448968](./_media/6._Reti_e_modelli_random__20.png)
+![image-20210514100340701](5_Reti_e_modelli_random.assets/image-20210514100340701.png)
 
-<div style="page-break-after: always;"></div>
+
+
+### 2.2.1 Problema della navigazione e modello di Kleinberg
+
+Consideriamo il problema della consegna di un messaggio da un generico nodo $u$ della rete ad un generico nodo $v$ della rete. Avendo una visione globale della rete, trovare il cammino minimo che collega i due nodi risulta essere molto semplice. Le reti random small world, in questo caso, ci permettono di consegnare in messaggio in tempo $O(\log n)$. Tuttavia, quando non si dispongono di informazioni globali e vengono sfruttati algoritmi decentralizzati, pur avendo una distanza media logaritmica tra nodi, il tempo di navigazione $T$ può essere maggiore. La  caratteristica della rete che descrive la capacità di arrivare da un nodo ad un altro nella rete senza informazioni globali è chiamata *navigabilità*. 
+
+Il modello di Kleinberg è una versione del modello di Watts-Strogatz che garantisce un tempo di navigazione $T = O((\log n)^2)$. Supponiamo di disporre di una griglia di punti (lattice) e di misurare la distanza tra due punti attraverso la distanza di Manhattan. 
+
+![image-20210514112246030](5_Reti_e_modelli_random.assets/image-20210514112246030.png)
+
+Definiamo arco locale (*local edge*) di un generico nodo $u$, tutti gli archi che collegano $u$ a nodi con distanza di Manhattan pari ad 1. Gli archi locali esistono con probabilità $p = 1$. Una volta collegati gli archi locali nel grafo, si esegue il rewiring andando a collegare un generico nodo $u$ ad un generico nodo $v$ non connesso ad $u$ con probabilità 
+$$
+P(u \to v) = \frac{1}{d(u,v)^{\alpha}}
+$$
+Dove $\alpha$ è un parametro chiamato *esponente di clustering*. Se $\alpha < 1$, allora il modello stimolerà le connessioni a più alta distanza, chiamate *long range edge*, mentre per $\alpha > 1$ gli archi saranno più frequentemente su nodi vicini. Sia $d$ il numero di dimensioni del lattice, modificando $\alpha$ si ottengono diversi gradi di navigabilità:
+
+* Per $\alpha = 0$ i link sono scelti in maniera uniforme su tutta la rete (mod. Watts-Strogatz);
+* Per $\alpha > d$ si tende a scegliere archi con nodi vicini 
+  * La ricerca decentralizzata trova rapidamente un target nelle vicinanze, ma lo raggiunge lentamente se è lontano. 
+* Per $\alpha < d$ si tende a scegliere molti archi con nodi lontani
+  * La ricerca decentralizzata si avvicina rapidamente all'area del target, ma poi rallenta fino a raggiungere il target. 
+* Per $a = d$ si ottiene una navigabilità ottimale per la rete. 
+
+Si osservi il plot che mostra nell'ascisse l'esponente di clustering e nelle ordinate il tempo di navigazione. Tale plot rispecchia quanto detto per un lattice bidimensionale. 
+
+![image-20210514114626315](5_Reti_e_modelli_random.assets/image-20210514114626315.png)
+
+#### Teorema 
+
+Sia $d(u,v)$ la distanza tra due nodi $u$ e $v$ di una griglia *bidimensionale* ($d=2$) di $n$ nodi. Se tra due vertici $u$ e $v$ viene aggiunto un arco remoto con probabilità $P(u \to v) = \frac{1}{d(u,v)^{\alpha}}$ con $\alpha = 2$ allora esiste un algoritmo di routing decentralizzato $A$ ed una costante $\alpha_2$ indipendente da $n$ tali che, quando $p=1$ (...) e $q=1$ (numero di archi long range per nodo) il numero di passi impiegati da $A$ per trasmettere un messaggio tra una coppia qualsiasi di nodi è al più $\alpha_2 (\log n)^2$. 
+
+> Alcune referenze per il modello di Kleinberg: 
+>
+> * https://www.nature.com/articles/35022643.pdf
+> * https://chih-ling-hsu.github.io/2020/05/15/kleinberg
+
+Confrontiamo infine i modelli visto sino ad ora rispetto alla navigabilità:
+
+|             | Kleinberg              | Watts-Strogatz     | Erdos-Renyi     |
+| ----------- | ---------------------- | ------------------ | --------------- |
+| Navigabile? | Yes                    | No                 | No              |
+| T           | $O((\log n)^{\alpha})$ | $O(n^{\alpha})$    | $O(n^{\alpha})$ |
+| Search time | $O((\log n)^2)$        | $O(n^{\frac 2 3})$ | $O(n)$          |
+
+
+
+### 2.2.2 Configuration model 
+
+Il configuration model è un modello in grado di generare un rete con una sequenza di gradi fissata $\langle k_1, k_2, \dots, k_n \rangle$. La procedura con cui si crea una rete attraverso il configuration model consiste nel generare, per ogni nodo, il rispettivo grado. I nodi vengono accoppiati casualmente. È utile come modello nullo, per confrontare una rete reale $G$ con una rete $G'$ che la ha stessa frequenza di gradi, quindi la stessa distribuzione dei gradi $P$.
+
+
 
 ### 2.2.1 Distribuzione power-law
 
@@ -422,8 +512,6 @@ Il termine "scale-free" si riferisce all'assenza di una scala, ovvero un valore 
 
 In una rete scale-free, in cui la distribuzione dei gradi è power-law, la varianza della distribuzione diverge per $N$ molto grande. Ciò implica che se scegliamo in maniera casuale un nodo, non possiamo dire nulla sul suo grado: può essere estremamente piccolo o estremamente grande. Non possiamo quindi indicare un ordine di grandezza o una scala al grado di un nodo. 
 
-<div style="page-break-after: always;"></div>
-
 La presenza di hub in una rete scale-free ha una conseguenza importante: rende in generale la rete più robusta ad attacchi o situazioni per cui uno o più collegamenti nella rete vengono meno. Se in una rete random un nodo qualsiasi viene giù o un collegamento si interrompe, l'intera rete potrebbe essere compromessa. I punti sensibili di una rete scale-free sono gli hub, che collegano la maggior parte dei nodi. 
 
 ![image-20201214183951583](./_media/6._Reti_e_modelli_random__22.png)
@@ -437,7 +525,7 @@ $$
 \langle d \rangle = \ln(\ln(N))
 $$
 
-<div style="page-break-after: always;"></div>
+
 
 ### 2.2.3 Perché le reti reali sono scale-free?
 
@@ -470,3 +558,4 @@ $$
 Il passo 2 realizza il *preferential attachment* in quanto $P$ è direttamente proporzionale al grado $k_i$. Il preferential attachment favorisce la formazione degli hub. Un nodo con alto grado ha più probabilità di un nodo con basso grado di stabilire nuove connessioni e diventare sempre più importante e centrale nella rete. Questo fenomeno è sintetizzato dall'espressione "*rich gets richer*". Attraverso il modello Barabasi-Albert si possono quindi creare reti scale-free.  
 
 ![File:Barabasi albert graph.svg - Wikimedia Commons](https://upload.wikimedia.org/wikipedia/commons/4/40/Barabasi_albert_graph.svg)
+
