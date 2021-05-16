@@ -490,23 +490,64 @@ Il configuration model è un modello in grado di generare un rete con una sequen
 
 ### 2.2.1 Distribuzione power-law
 
-Nel modello Watts-Strogatz la distribuzione dei gradi dei nodi risulta essere una distribuzione simile alla Poisson, come nel modello di Erdos-Renyi. Come abbiamo visto, nelle reti reali la distribuzione dei gradi non è affatto simile alla distribuzione di Poisson. Piuttosto, è ben approssimata da una distribuzione chiamata *power-law*. 
+Nel modello Watts-Strogatz la distribuzione dei gradi dei nodi risulta essere una distribuzione simile alla Poisson, analogo nel modello di Erdos-Renyi. Come abbiamo visto, nelle reti reali la distribuzione dei gradi non è affatto simile alla distribuzione di Poisson. Piuttosto, è ben approssimata da una distribuzione chiamata *power-law*. 
 
 Una distribuzione $p$ è una power-law se: 
 $$
-p_k \sim k^{-\gamma}
+p_k \propto k^{-\gamma}
 $$
-Dove il parametro $\gamma$ è detto *esponente di grado*. Nelle reti reali si osserva generalmente $2 < \gamma < 3$. Vediamo a confronto la distribuzione power-law e quella di Poisson: 
+Dove il parametro $\gamma$ è detto *esponente di grado*. Si può dimostrare che sopra un certo valore $x$, la distribuzione power law è sempre più alta della distribuzione esponenziale, quindi 
+$$
+\lim_{x\to\infty} \frac{zx^{-\gamma}}{e^{-x}} = \infty
+$$
+Nelle reti reali si osserva generalmente $2 < \gamma < 3$. Vediamo a confronto la distribuzione power-law e quella di Poisson. Si osservi che, in scala log-log (b) la distribuzione power-law assume la forma di una retta di pendenza $-\gamma$.
 
 <img src="./_media/6._Reti_e_modelli_random__21.png" alt="image-20201214182344170" style="zoom:80%; margin:30px" />
 
+#### Studiare la legge di potenza in una rete reale
+
+Supponiamo di avere a disposizione una rete reale che segue una legge di potenza
+$$
+P(x) = z x^{-\gamma}
+$$
+Siamo interessati a conoscere la costante di normalizzazione $z$ e l'esponente di grado $\gamma$. Essendo $P(x)$ una distribuzione di probabilità, l'area sotto la curva varrà 1: 
+$$
+1 = \int_{x_m}^{+\infty} zx^{-\gamma} dx = 
+z \int_{x_m}^{+\infty} x^{-\gamma} dx
+$$
+Dove $x_m$ è un numero stimabile dai dati reali, dopo il quale la distribuzione segue la legge di potenza. Risolvendo l'equazione rispetto a $z$ otteniamo che 
+$$
+z = (\gamma -1) x_m^{\gamma - 1}
+$$
+Quindi sostituendo la $z$ nella distribuzione dei gradi otteniamo
+$$
+P(x) = \frac{\gamma - 1}{x_m^{1 - \gamma}} x^{-\gamma}
+$$
+Il valore atteso di tale distribuzione risulta essere:
+$$
+E[X] = \frac{\gamma - 1}{\gamma -2} x_m
+$$
+Se $\gamma < 2$ allora il valore atteso assume un valore negativo. Tuttavia non è possibile avere un grado negativo, per cui il valore atteso diverge a $\infty$. Per $\gamma < 3$ anche la varianza $Var[X]$ diverge a $\infty$. 
+
+Per stimare l'esponente di grado $\gamma$ è possibile utilizzare la Maximum Likelihood: 
+$$
+L(\gamma) = \log \left( \prod_{i}^n p(d_i) \right) =
+\sum_i^n \log(p(d_i)) = 
+\sum_i^n \left(  
+\ln(\gamma - 1) - \ln(x_m) - \gamma \ln(\frac{d_i}{x_m})
+\right)
+$$
+Vogliamo trovare $\gamma$ che massimizza $L(\gamma)$, per cui settiamo $\frac{dL(\gamma)}{d\gamma} = 0$ e risolviamo l'equazione. Ne segue che: 
+$$
+\hat\gamma = 1 + n\left[ \sum_i^n \ln \left(\frac{d_i}{x_m}\right) \right]^{-1}
+$$
 
 
 ### 2.2.2 Rete scale-free
 
 Le reti la cui distribuzione dei gradi segue una distribuzione power-law sono dette reti *scale-free*, o *invarianti per scala*. Ciò implica che nelle reti scale-free vi è una piccola porzione di nodi che hanno un grado elevato ed una elevata porzione di nodi, che copre quasi tutta la rete, con basso grado. I nodi di elevato grado vengono chiamati anche *hub*. 
 
-Una rete scale-free è quindi caratterizzata dalla presenza di un certo numero di *hub*, che invece sono praticamente assenti nelle reti random o small-world. Il comportamento scale-free delle reti reali riflette perfettamente ciò che accade in tantissimi ambiti della società attuale (economia, rapporti sociali, etc.) ed è ben riassunto dalla regola di Pareto, o regola 80/20. 
+Una rete scale-free è quindi caratterizzata dalla presenza di un certo numero di *hub*, che risultano essere praticamente assenti nelle reti random o small-world. Il comportamento scale-free delle reti reali riflette perfettamente ciò che accade in tantissimi ambiti della società attuale (economia, rapporti sociali, etc.) ed è ben riassunto dalla regola di Pareto, o regola 80/20. 
 
 Il termine "scale-free" si riferisce all'assenza di una scala, ovvero un valore di riferimento per stabilire il grado di un nodo qualsiasi della rete. In una rete random in cui la distribuzione dei gradi è di Poisson, la media corrisponde al picco della curva e i gradi dei rimanenti nodi si discostano poco dalla media (varianza finita e bassa): in tal caso la media rappresenta il valore di scala. 
 
@@ -520,7 +561,7 @@ La presenza di hub in una rete scale-free ha una conseguenza importante: rende i
 
 #### Proprietà ultra small-world
 
-La presenza degli hub in una rete scale-free ha un'altra importante conseguenza: riduce la distanza media tra i nodi. Per valori dell'esponente di grado $2 < \gamma < 3$ si parla di ultra small-world. In questo scenario la distanza media tra i nodi è più piccola della distanza media osservata nella rete random. Per $gamma > 3$ la rete è small-world ed ha proprietà che la rendono molto simile ad una rete random. Nel caso $\gamma < 2$  per $N$ che tende ad infinito sia la media che la varianza divergono, ciò implica che non possono esistere reti grandi con $\gamma < 2$. Per le reti ultra small-world si ha: 
+La presenza degli hub in una rete scale-free ha un'altra importante conseguenza: riduce la distanza media tra i nodi. Per valori dell'esponente di grado $2 < \gamma < 3$ si parla di ultra small-world. In questo scenario la distanza media tra i nodi è più piccola della distanza media osservata nella rete random. Per $\gamma > 3$ la rete è small-world ed ha proprietà che la rendono molto simile ad una rete random. Nel caso $\gamma < 2$  per $N$ che tende ad infinito sia la media che la varianza divergono, ciò implica che non possono esistere reti grandi con $\gamma < 2$. Per le reti ultra small-world si ha: 
 $$
 \langle d \rangle = \ln(\ln(N))
 $$
@@ -559,3 +600,14 @@ Il passo 2 realizza il *preferential attachment* in quanto $P$ è direttamente p
 
 ![File:Barabasi albert graph.svg - Wikimedia Commons](https://upload.wikimedia.org/wikipedia/commons/4/40/Barabasi_albert_graph.svg)
 
+### 2.3.1 Variante del modello
+
+Supponiamo di introdurre una variabile $p$ distribuita uniformemente. Allora possiamo modificare il nostro modello che sfrutta il preferential attachment come segue: 
+
+* Con probabilità $p$ si collega $j$ ad un nodo $i$ random
+* Con probabilità $1-p$ si collega $j$ utilizzando il preferential attachment
+
+Se $p=0$, allora il modello ricade nel modello standard di Barabasi-Albert. Da tale costruzione del modello, ne deriva che
+$$
+P(d_i = k) \propto k^{-\left( 1 + \frac{1}{1-p} \right)}
+$$
