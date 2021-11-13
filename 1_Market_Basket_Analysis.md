@@ -90,7 +90,7 @@ $$
 \frac {n(n-1)(n-2)!} {2(n-2)!} = 
 \frac {n(n-1)}{2}
 $$
-Definiamo una struttura apposita (es. una matrice) che contenga tutti gli item sia nelle righe che nelle colonne. Per ogni coppia di item all'interno del basket incrementa l'occorrenza della coppia nella struttura. Tale algoritmo fallisce se $\text{(#items)}^2$ provoca un overflow in memoria primaria (gli item potrebbero essere dell'ordine dei miliardi). Supponiamo vi siano 10<sup>5</sup> elementi in memoria e quindi: 
+Definiamo una struttura apposita (es. una matrice) che contenga tutti gli item sia nelle righe che nelle colonne. Per ogni coppia di item all'interno del basket incrementa l'occorrenza della coppia nella struttura. Tale algoritmo fallisce se $\text{(\#items)}^2$ provoca un overflow in memoria primaria (gli item potrebbero essere dell'ordine dei miliardi). Supponiamo vi siano 10<sup>5</sup> elementi in memoria e quindi: 
 $$
 \frac{10^5 * (10^5-1)}{2} \simeq 5*10^9 \space pairs
 $$
