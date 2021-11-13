@@ -75,7 +75,7 @@ Tipicamente i file contenenti i dati sono memorizzati nel disco (es. flat files,
 
 ## 4. Algoritmi di ricerca di coppie frequenti 
 
-Analizzando un algoritmo di ricerca degli insiemi frequenti, scoviamo subito che il costo principale è quello di cercare tra tutte le **coppie**: con 10<sup>k</sup> elementi, le coppie sono circa 10<sup>k*2</sup> elementi. Meno oneroso è il compito di cercare triple, quadruple etc. 
+Analizzando un algoritmo di ricerca degli insiemi frequenti, scoviamo subito che il costo principale è quello di cercare tra tutte le **coppie**: con 10<sup>k</sup> elementi, le coppie sono circa 10<sup>k*2</sup> elementi. In generale, dato l'insieme $I$ formato da $d$ elementi, l'insieme delle parti (power set) ha cardinalità $2^d$, ovvero si avranno $2^d$ itemset da analizzare, per cui la ricerca esaustiva prenderebbe tempo esponenziale $O(2^n)$. Vedremo che sarà meno oneroso il compito di cercare triple, quadruple etc. 
 
 In generale: *la probabilità di essere insiemi frequenti diminuisce esponenzialmente all'aumentare della dimensione della tupla*. Il perché è dimostrabile in termini probabilistici. 
 Vediamo adesso alcuni algoritmi che si occupano della ricerca di coppie frequenti. 
