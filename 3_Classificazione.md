@@ -244,7 +244,7 @@ Sia A un attributo avente i seguenti valori $\{a_1, ..., a_n\}$. Effettuando lo 
 $$
 INFO(A) = \bar{H}_A(S_X) = \sum_{i=1}^k \frac{|S_i|}{|S_X|} H(S_i)
 $$
-L'**information gain** è definito come la riduzione di entropia ottenuta dal partizionamento di $S_X$ scegliendo scegliendo l'attributo A, ovvero: 
+L'**information gain** è definito come la riduzione di entropia ottenuta dal partizionamento di $S_X$ scegliendo l'attributo A, ovvero: 
 $$
 gain(A) = H(S_X) - \bar{H}_A(S_X)
 $$
@@ -413,7 +413,7 @@ Idealmente, ogni regola sulla classe C dovrebbe coprire insiemi di osservazioni 
 
 Alcuni algoritmi noti per la ricerca del **minimal set covering** sono FOIL, AQ, CN2, RIPPER. Le regole vengono costruite in maniera sequenziale. L'obiettivo è individuare una regola per una classe C che copra *molte* tuple di classe C (**esempi positivi**) e nessuna (o poche) tuple delle altre classi (**esempi negativi**). Lo schema generale è il seguente: 
 
-* Sia S il set formato da tutte le osservazioni del training set 
+* Sia S il set formato da tutte le osservazioni del training set.
 * Le regole vengono apprese una per volta seguendo un criterio greedy basato sulla qualità della soluzione. 
 * Ogni volta che una nuova regola viene appresa, gli esempi positivi vengono rimossi da S. 
 * Il processo viene ripetuto sino a quando S non diventa vuoto. 
