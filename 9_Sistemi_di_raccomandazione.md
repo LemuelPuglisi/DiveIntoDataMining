@@ -161,7 +161,7 @@ $$
 Dopodiché possiamo costruire il profilo dell'utente $x_i$ come segue: 
 $$
 \text{profile}(x_i) = \frac {1}{\sum_j[M_{i,j} \ne 0]} 
-\sum_{j=1}^n M_{i.j} \times I_j
+\sum_{j=1}^n (M_{i.j} - \bar{u_i}) \times I_j
 $$
 
 
